@@ -1,0 +1,54 @@
+---
+title: "US Options Tick Data: Trade and Quote Reference"
+sidebarTitle: "Options Ticks"
+description: "Field reference for AlgoSeek US Options tick datasets — millisecond-precision OPRA trade and NBBO quote records with aggressor flags and exchange codes."
+---
+
+AlgoSeek's US Options tick datasets provide millisecond-precision records of every options trade print and top-of-book quote update from the OPRA feed. Whether you need full TAQ detail, filtered NBBO-only quotes, or Global Trading Hours (GTH) data, each variant offers the same core field schema with dataset-specific additions.
+
+## Tick Dataset Variants
+
+| Dataset | Contents | Formats |
+|---|---|---|
+| Trade and Top of Book Quote | Trade prints + full top-of-book context and underlying reference | CSV |
+| Trade and NBBO Quote | Trades + NBBO quotes only, filtered from full OPRA TAQ | CSV, SQL |
+| Trade Only | All listed US options trade ticks | CSV, SQL |
+| GTH Trade Only | Global Trading Hours trade ticks only | CSV |
+| Trade and Quote GTH | Full TAQ for Global Trading Hours session | CSV |
+
+## Trade Record Fields
+
+| Field | Type | Description |
+|---|---|---|
+| DateTime | datetime | Millisecond-precision timestamp (ET) |
+| ContractId | string | AlgoSeek options contract identifier |
+| Underlying | string | Underlying ticker symbol |
+| Expiration | date | Contract expiration date |
+| Strike | float | Strike price |
+| OptionType | string | 'C' for call, 'P' for put |
+| Price | float | Trade execution price |
+| Size | int | Contracts traded |
+| Exchange | string | Exchange where trade was executed |
+| IsAggressorBuy | bool | True if buyer was the aggressor |
+| ConditionCode | string | Exchange trade condition code |
+
+## Quote Record Fields
+
+| Field | Type | Description |
+|---|---|---|
+| DateTime | datetime | Millisecond-precision timestamp (ET) |
+| ContractId | string | AlgoSeek options contract identifier |
+| BidPrice | float | Best bid (NBBO) |
+| BidSize | int | Aggregate bid size at NBBO |
+| AskPrice | float | Best ask (NBBO) |
+| AskSize | int | Aggregate ask size at NBBO |
+| Exchange | string | Exchange originating the quote update |
+| UnderlyingPrice | float | Underlying mid-price at time of quote (Top of Book variant) |
+
+## Volume Considerations
+
+Options tick data can be very large for full-universe requests spanning all contracts, expiries, and strikes. When requesting historical data, filter by underlying symbol, expiry range, or strike range to keep file sizes manageable. If you access AlgoSeek data through ArdaDB, push those filters down to the SQL query layer — server-side filtering avoids transferring rows you will discard anyway and significantly reduces both latency and egress volume.
+
+<Tip>
+  Use the Trade and NBBO Quote variant when you need best-price context without the full OPRA quote stream — it is significantly smaller than the full TAQ file while preserving trade-level aggressor identification.
+</Tip>

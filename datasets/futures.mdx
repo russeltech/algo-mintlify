@@ -1,0 +1,46 @@
+---
+title: "US Futures & Future Options Data: TAQ and Tick"
+sidebarTitle: "Futures"
+description: "AlgoSeek US futures datasets include TAQ minute bars, tick data with aggressor flags, and full order book depth for all major US futures contracts."
+---
+
+AlgoSeek US futures data covers all major US futures contracts with millisecond timestamps, aggressor flags, and exchange condition codes. Whether you need the full granularity of tick-by-tick order flow or the efficiency of pre-built minute bars, the catalog provides datasets at tick resolution and aggregated into minute bars with 50+ analytics fields — giving you everything required to research, backtest, and monitor futures strategies with institutional precision.
+
+## Futures Intraday Bar Datasets
+
+Intraday bar datasets aggregate raw futures tick data into structured time bars. Each dataset balances analytical depth against file size for different research and production workflows.
+
+| Dataset | Resolution | Key Fields | Formats |
+|---|---|---|---|
+| Trade and Quote Minute Bar | 1 min | OHLC from trades+quotes, VWAP, spread stats, aggressor trade counts | CSV, SQL |
+| Trade Only Minute Bar | 1 min | OHLCV, VWAP, trade count | CSV, SQL |
+| Trade Only Second Bar | 1 sec | OHLCV bars at second resolution | CSV |
+
+## Futures Tick Datasets
+
+Futures tick datasets deliver the complete native-resolution event stream from the exchange. Every record carries millisecond timestamps, aggressor-side identification, and exchange-issued condition codes.
+
+| Dataset | Notes | Formats |
+|---|---|---|
+| Trade and Quote | Millisecond timestamps, aggressor flags, exchange condition codes | CSV, SQL |
+| Trade Only | Trade ticks with aggressor identification | CSV, SQL |
+| Multiple Depth | Full order book depth snapshots | CSV, SQL |
+
+## Future Options
+
+AlgoSeek also provides a matching suite of datasets for options on futures contracts. The future options catalog includes a **TAQ Minute Bar**, **Trade Only Minute Bar**, **Trade and Quote** tick, and **Trade Only** tick dataset — all available in CSV format. Millisecond timestamps and aggressor flags follow the same conventions as the parent futures series, making it straightforward to align options activity against the underlying contract's order flow.
+
+<Note>
+  Futures data coverage includes all major US futures venues. Contact
+  [sales@algoseek.com](mailto:sales@algoseek.com) to confirm coverage for
+  specific contracts or exchanges.
+</Note>
+
+<CardGroup cols={2}>
+  <Card title="Futures TAQ Minute Bar Reference" icon="table" href="/reference/futures-taq-minute-bar">
+    Full field-level schema for the Futures Trade and Quote Minute Bar dataset, including all analytics fields, aggressor counts, and spread statistics.
+  </Card>
+  <Card title="Futures Tick Data Reference" icon="bolt" href="/reference/futures-tick-data">
+    Complete field definitions for the Futures Trade and Quote and Trade Only tick datasets, with aggressor flag logic and condition code mappings.
+  </Card>
+</CardGroup>

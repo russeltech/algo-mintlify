@@ -1,0 +1,67 @@
+---
+title: "AlgoSeek Data Types: Ticks, Bars, and Daily Data"
+sidebarTitle: "Data Types"
+description: "Learn how AlgoSeek structures market data into tick, intraday bar, daily, and reference types — and which to use for your trading or research workflow."
+---
+
+AlgoSeek data is organized into four fundamental types: tick data, intraday bar data, daily data, and reference/event data. Each type is optimized for different workflows — from sub-millisecond signal generation to long-horizon backtesting. Choosing the right type (or combination of types) for your use case is the first step toward building a reliable quantitative pipeline.
+
+## Tick Data
+
+Tick data captures every individual trade print or quote update directly from the exchange feed, with nanosecond or millisecond precision timestamps depending on the asset class. Each record preserves the full fidelity of the raw market event, including price, size, exchange flags, aggressor direction, and condition codes.
+
+Because tick data reflects the actual sequence of market microstructure events, it is the most granular — and most storage-intensive — data type AlgoSeek offers.
+
+**Best for:**
+- High-frequency trading (HFT) strategy development and simulation
+- Market microstructure analysis (bid-ask spreads, queue dynamics, adverse selection)
+- Order flow research and trade classification
+
+## Intraday Bar Data
+
+Intraday bars are time-aggregated summaries of tick activity, available at second (1s) or minute (1min) intervals. Each bar condenses the underlying tick stream into a compact, analysis-ready record that includes OHLCV plus a rich set of derived analytics: VWAP, spread statistics, order-flow imbalance, and NBBO metrics at the open, high, low, and close of each interval.
+
+Bar data is dramatically smaller than tick data while retaining enough signal for the vast majority of quantitative strategies. AlgoSeek offers several bar variants tuned to different fidelity and file-size requirements:
+
+| Bar Type | Interval | Fields | Asset Classes |
+|---|---|---|---|
+| TAQ Minute Bar | 1 min | 60–90+ | Equity, Options, Futures |
+| Trade Only Minute Bar | 1 min | ~15 | Equity, Options, Futures |
+| TAQ Second Bar | 1 sec | 90+ | Equity |
+| Industry Standard Minute Bar | 1 min | ~10 | Equity |
+
+**Best for:**
+- Intraday quantitative strategies (momentum, mean reversion, stat-arb)
+- Historical backtesting at realistic execution granularity
+- Machine learning feature engineering (VWAP deviation, spread-to-price ratio, etc.)
+
+## Daily Data
+
+Daily data provides end-of-day summaries for each security, including OHLCV, VWAP, segment volumes (pre-market, regular hours, after-hours), and a range of derived analytics. AlgoSeek makes daily data available in both **raw (unadjusted)** and **corporate-action-adjusted** forms so you can choose the appropriate representation for your workflow without applying transformations manually.
+
+**Best for:**
+- Daily and multi-day strategy backtesting
+- Portfolio construction and rebalancing signals
+- Alignment with fundamental research data (earnings, valuations, ratings)
+
+## Reference & Event Data
+
+Reference and event data are non-price datasets that provide the context needed to interpret market data correctly over time. This category includes:
+
+- **Security Master files** — map internal identifiers (SecId, ASID) to tickers, company names, sectors, exchanges, FIGI, and ISIN
+- **Adjustment factor files** — encode stock splits, dividends, and other corporate actions as price and volume multipliers
+- **Corporate event logs** — record IPOs, trading halts, delistings, earnings announcements, and index reconstitutions
+- **Index composition files** — track constituent membership for major benchmarks across time
+
+Reference data is essential for maintaining accurate backtests over multi-year horizons. Without it, split-unadjusted prices produce phantom returns, and retired tickers cause silent join failures.
+
+**Best for:**
+- Universe construction and survivorship-bias correction
+- Continuous price series spanning ticker changes or corporate reorganizations
+- Cross-dataset and cross-vendor data integration
+
+<Tip>
+  Most quantitative workflows combine at least two types: a price dataset (tick
+  or bar) plus a reference dataset (Security Master + Adjustment Factors) to
+  handle corporate actions correctly.
+</Tip>

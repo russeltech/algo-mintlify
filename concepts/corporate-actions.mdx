@@ -1,0 +1,68 @@
+---
+title: "Corporate Actions and Price Adjustment in AlgoSeek"
+sidebarTitle: "Corporate Actions"
+description: "Learn how AlgoSeek handles stock splits, dividends, and other corporate actions, and how to apply adjustment factors to build accurate historical price series."
+---
+
+Corporate actions — stock splits, dividends, spin-offs, mergers — change the price and volume scale of a security, creating discontinuities in raw price series that can generate phantom returns and distort backtested results. AlgoSeek provides both unadjusted (raw) and adjusted datasets, plus standalone adjustment factor files so you can build your own adjusted series with a full audit trail and complete control over the adjustment methodology.
+
+## Types of Corporate Actions Covered
+
+AlgoSeek tracks the following corporate action types across all supported equity markets:
+
+- Stock splits and reverse splits
+- Cash dividends (regular and special)
+- Special dividends
+- Rights offerings
+- Spin-offs and carve-outs
+- Mergers and acquisitions
+- Share class conversions
+
+## Adjustment Datasets
+
+AlgoSeek ships three adjustment factor file variants, each suited to a different level of workflow complexity:
+
+1. **Basic Adjustment Factors** — A single multiplier per corporate action event, applied to both price and volume. The simplest format to work with and sufficient for the vast majority of backtesting use cases. Each row represents one event affecting one security.
+
+2. **Detailed Adjustment Factors** — Event-level records that include the action type, ex-date, record date, and both price and volume factors. Use this file when you need an auditable adjustment history, want to selectively exclude certain action types (e.g., exclude dividends but apply splits), or need to implement custom adjustment logic.
+
+3. **Cumulative Adjustment Factors** — Pre-multiplied cumulative factors calculated from each historical date forward to the present. To get a present-value-equivalent price for any historical date, multiply the raw price by the cumulative factor for that date. This is the fastest path to a fully adjusted series when you do not need to inspect individual events.
+
+## Pre-Adjusted Datasets
+
+If you prefer not to manage adjustment factors yourself, AlgoSeek offers several pre-adjusted dataset variants that include both raw and adjusted columns side-by-side, making it straightforward to validate the adjustment by comparing the two:
+
+- US Equities Trade Only Adjusted Minute Bar
+- US Equities Industry Standard Trade Only Minute Bar Adjusted
+- US Equities Daily OHLC Adjusted
+- US Equities Industry Standard Daily OHLC Adjusted
+- US Equities Primary Exchange Adjusted Daily OHLC
+
+Having raw and adjusted columns in the same file lets you audit the applied factor directly: dividing the adjusted close by the raw close for any event date reveals the exact multiplier that was applied.
+
+<Warning>
+  Always re-download adjustment factors after each market close. New corporate
+  actions are applied retroactively, so a factor file from last week may not
+  reflect recently announced events.
+</Warning>
+
+## Applying Adjustments Manually
+
+When you need full control over the adjustment process — for example, to apply splits but not dividends, or to reconstruct an adjustment as of a specific anchor date — you can apply the Basic Adjustment Factors file directly to your price data. The snippet below demonstrates a backward adjustment, which scales all historical prices down to be comparable with the most recent unadjusted price:
+
+```python
+import pandas as pd
+
+# Load price data and adjustment factors
+prices = pd.read_csv('AAPL_trade_only_1min.csv', parse_dates=['DateTime'])
+factors = pd.read_csv('AAPL_basic_adj_factors.csv', parse_dates=['ExDate'])
+
+# Merge factors on ex-date and apply backward adjustment
+# (Multiply all prices prior to ex-date by the factor)
+for _, row in factors.sort_values('ExDate', ascending=False).iterrows():
+    mask = prices['DateTime'] < row['ExDate']
+    prices.loc[mask, 'ClosePrice'] *= row['PriceFactor']
+    prices.loc[mask, 'Volume'] *= row['VolumeFactor']
+```
+
+Iterating in reverse chronological order ensures that each factor is applied to the correct historical window without double-counting when multiple events occur for the same security. After the loop, `ClosePrice` and `Volume` are fully adjusted backward to the present.

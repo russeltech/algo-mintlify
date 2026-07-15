@@ -1,0 +1,65 @@
+---
+title: "US Equities Tick Data: TAQ and Trade Only Reference"
+sidebarTitle: "Equity Ticks"
+description: "Field reference for AlgoSeek US equities tick datasets — nanosecond-precision SIP trade and quote records with NBBO context and exchange condition codes."
+---
+
+AlgoSeek's US equities tick datasets capture every individual trade print and top-of-book quote update from the SIP consolidated feed, with nanosecond-precision timestamps. These are the most granular US equity data products available, forming the foundation for microstructure research, HFT strategy development, and custom bar construction.
+
+## Tick Dataset Variants
+
+AlgoSeek offers four tick-level equity datasets. Use the Trade and Quote dataset for full NBBO context, the Trade Only dataset when quote records aren't needed, and the OTC Quote dataset for OTC-market coverage.
+
+| Dataset | Contents | Formats |
+|---|---|---|
+| Trade and Quote (TAQ) | Every trade + every NBBO quote update | CSV, SQL |
+| Trade Only | Trade prints only (no quote records) | CSV, SQL |
+| Adjusted Trade Only | Trade prints + corporate-action-adjusted prices | SQL |
+| OTC Quote | OTC market quotes (FINRA OTC Bulletin Board) | CSV, SQL |
+
+## Trade Record Fields
+
+Each trade record represents a single execution reported to the SIP consolidated tape. Condition codes reflect exchange-specific tape qualifiers and should be filtered according to your research methodology.
+
+| Field | Type | Description |
+|---|---|---|
+| DateTime | datetime | Nanosecond-precision timestamp (ET) |
+| Ticker | string | Equity ticker symbol |
+| Price | float | Trade execution price |
+| Size | int | Trade size (shares) |
+| Exchange | string | Exchange where trade was executed |
+| Condition | string | Exchange trade condition codes |
+| IsAggressorBuy | bool | True if buyer was the aggressor |
+| IsFinraTRF | bool | True if reported via FINRA TRF |
+| IsOddLot | bool | True if trade was an odd lot (&lt;100 shares) |
+
+## Quote Record Fields
+
+Quote records appear only in the Trade and Quote (TAQ) dataset. Each record reflects a change to the NBBO best bid or offer as reported by the SIP feed.
+
+| Field | Type | Description |
+|---|---|---|
+| DateTime | datetime | Nanosecond-precision timestamp (ET) |
+| Ticker | string | Equity ticker symbol |
+| BidPrice | float | NBBO best bid price |
+| BidSize | int | Aggregate bid size at NBBO price |
+| AskPrice | float | NBBO best ask price |
+| AskSize | int | Aggregate ask size at NBBO price |
+| Exchange | string | Exchange originating the quote update |
+
+## File Size Considerations
+
+Full-universe equity TAQ tick files are very large — a complete calendar year of all-ticker, all-exchange trade and quote data runs into multiple terabytes. Before subscribing to the full universe, evaluate whether you need every symbol or can narrow your subscription to a target list.
+
+<CardGroup cols={2}>
+  <Card title="Ticker Subsetting" icon="filter">
+    Subscribe to a curated list of tickers to reduce data volume significantly. AlgoSeek can deliver per-ticker or per-sector files on request.
+  </Card>
+  <Card title="Query Without Downloading" icon="database">
+    Use [ArdaDB](/delivery/ardadb) to run SQL queries against the full tick universe without transferring raw files. Ideal for exploratory research and signal prototyping.
+  </Card>
+</CardGroup>
+
+<Note>
+  Tick data is delivered in pre-split files sorted by DateTime within each ticker-day file. Use BarTime-indexed products if your workflow doesn't require sub-minute granularity.
+</Note>

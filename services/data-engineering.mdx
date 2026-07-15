@@ -1,0 +1,61 @@
+---
+title: "Custom Data Engineering Services from AlgoSeek"
+sidebarTitle: "Data Engineering"
+description: "AlgoSeek's data engineering team handles data onboarding, normalization, cross-referencing, custom field calculation, and integration for your specific workflow."
+---
+
+AlgoSeek's data engineering services cover the full lifecycle of financial data — from ingesting third-party sources and normalizing schemas, to computing custom analytics and delivering integrated datasets to your platform. These services are designed for institutions that need data beyond the standard catalog, with every engagement scoped and executed by AlgoSeek's in-house data engineering team.
+
+## Data Onboarding
+
+AlgoSeek collects and manages data from external sources on your behalf, including both real-time and historical feeds. The onboarding pipeline handles everything from initial connectivity through schema standardization and ongoing quality monitoring:
+
+- **Third-party vendor connectivity** — AlgoSeek connects to your data vendors using prebuilt connectors or develops custom connectors for proprietary or non-standard feed formats.
+- **Automated schema detection and profiling** — Each incoming dataset is profiled automatically. AlgoSeek generates quality reports and surfaces anomalies before data reaches your downstream systems.
+- **Normalization** — Raw feeds are standardized across format, sort order, column naming conventions, and date representations. Missing values are handled consistently using configurable fill strategies.
+- **Entity mapping** — Records are cross-referenced and linked using algoseek SecId, FIGI, ISIN, or any custom identifier scheme your organization uses.
+
+## Custom Data Calculation
+
+AlgoSeek can compute derived fields and custom analytics on top of raw or normalized data, delivering enriched datasets ready for research, backtesting, or production use:
+
+- **Custom fields** — Technical indicators, market microstructure signals (such as order imbalance, trade intensity, and quote stuffing metrics), and synthetic pricing series.
+- **Custom aggregation** — Non-standard bar types including Renko bars, volume-based bars, tick bars, expiry-aligned bars, and multi-leg combination bars (for example, AAPL + 3×MSFT − 2×GOOG) for spread and basket strategies.
+- **Custom indexes** — Full index calculation services including periodic rebalancing logic, corporate action handling, and real-time or scheduled dissemination to your platform.
+- **Order book aggregation** — Merging feeds such as TotalView and NYSE Integrated into a unified consolidated book, with optional liquidity heatmap generation and market profile indicators.
+- **Options analytics** — Custom Greeks, implied volatility surfaces, and put/call ratio calculations for equity options, ETF options, index options, and futures options.
+- **Market scanners** — Multi-criteria filtering engines that rank or flag instruments based on combinations of technical, microstructure, and fundamental signals.
+
+## Data Integration
+
+AlgoSeek can blend its own datasets with external sources and deliver the result to your existing infrastructure:
+
+- **Data blending** — Combine AlgoSeek equity, options, or futures data with alternative data feeds — news sentiment, ESG scores, satellite data, or any third-party source — into a unified dataset.
+- **Cloud migration** — AlgoSeek supports migrating and delivering data to AWS S3, ArdaDB, Snowflake, Databricks, or Azure Blob Storage, with schemas optimized for each target environment.
+- **Data curation** — AlgoSeek can index, annotate, and catalog datasets for internal data discovery, making it easier for teams across your organization to find and use the right data.
+
+## Getting Started
+
+To discuss a custom data engineering project, reach out to the AlgoSeek team directly:
+
+- **Email:** sales@algoseek.com
+- **Phone:** +1 646 583 1832
+
+AlgoSeek's sales team will scope your requirements and connect you with the appropriate data engineering specialists.
+
+<CardGroup cols={2}>
+  <Card
+    title="Data Pipeline as a Service"
+    icon="pipe-section"
+    href="/services/data-pipeline"
+  >
+    Build and run modular financial data pipelines using AlgoSeek's prebuilt connectors, normalizers, and schedulers.
+  </Card>
+  <Card
+    title="Ticker Plant as a Service"
+    icon="wave-pulse"
+    href="/services/ticker-plant"
+  >
+    Process raw exchange feeds into normalized market data with AlgoSeek's third-generation ticker plant.
+  </Card>
+</CardGroup>

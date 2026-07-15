@@ -1,0 +1,98 @@
+---
+title: "Query Petabytes of Market Data with ArdaDB SQL"
+sidebarTitle: "ArdaDB"
+description: "ArdaDB is AlgoSeek's columnar cloud database powered by ClickHouse. Query 2+ petabytes of pre-loaded historical market data using standard SQL in seconds."
+---
+
+ArdaDB is AlgoSeek's hosted columnar database built on open-source ClickHouse, preloaded with 2+ petabytes of AlgoSeek historical and near-real-time market data. You can start querying immediately using standard SQL — no ingestion, no data copying, no warehouse setup required. The data is already there; you just connect and query.
+
+## Why ArdaDB?
+
+<CardGroup cols={2}>
+  <Card title="Instant Access" icon="bolt">
+    AlgoSeek data is already loaded across all supported asset classes. Start querying on day one without waiting for ingestion jobs, ETL pipelines, or storage provisioning.
+  </Card>
+  <Card title="Fast at Scale" icon="gauge-high">
+    Processes 273 million rows and 2.89 GB in approximately 6 seconds on a single instance. ClickHouse's columnar engine is purpose-built for analytical scan queries on large time-series datasets.
+  </Card>
+  <Card title="Standard SQL" icon="code">
+    Write queries using familiar SQL syntax with time-series extensions provided by ClickHouse. No proprietary query language to learn — your existing SQL skills work immediately.
+  </Card>
+  <Card title="Low Cost" icon="circle-dollar-to-slot">
+    Columnar compression dramatically reduces storage costs compared to row-oriented databases. You pay for compute usage rather than raw data volume, keeping costs predictable as your query workload scales.
+  </Card>
+</CardGroup>
+
+## Running Your First Query
+
+The example below aggregates daily trading volume across all tickers over a six-week window and filters for high-activity names. It illustrates ArdaDB's performance on a typical research-scale scan:
+
+```sql
+SELECT
+    TradeDate,
+    Ticker,
+    sum(Volume) AS DailyVolume
+FROM USEquityMarketData.TradeAndQuoteMinuteBar
+WHERE (TradeDate >= '2023-01-18') AND (TradeDate <= '2023-02-28')
+GROUP BY
+    TradeDate, Ticker
+HAVING DailyVolume > 10000000
+ORDER BY TradeDate, DailyVolume DESC
+```
+
+This query returns **2,051 rows** in **6.15 seconds**, processing **273.55 million rows** at **44.48 million rows/sec** — on a single ArdaDB instance with no pre-aggregation.
+
+## Key Tables
+
+| Table | Asset Class | Description |
+|---|---|---|
+| `USEquityMarketData.TradeAndQuoteMinuteBar` | Equity | TAQ minute bars with 60+ fields |
+| `USEquityMarketData.TradeOnly` | Equity | Tick-level trade data |
+| `USEquityMarketData.DailyOHLC` | Equity | Daily OHLCV summary |
+| `USOptionsMarketData.TradMinuteBar` | Options | Options TAQ minute bars |
+| `USOptionsMarketData.DailyAnalytics` | Options | Greeks and IV daily |
+| `USFuturesMarketData.TradeAndQuoteMinuteBar` | Futures | Futures TAQ minute bars |
+
+## Storage Architecture
+
+ArdaDB uses a tiered storage model designed for both performance and cost efficiency. Each instance mounts private EBS volumes for hot query data alongside an S3 backing tier for the full historical archive. Enterprise clients can share a dedicated multi-team S3 storage tier, allowing multiple users within an organization to query the same underlying dataset without duplicating storage costs.
+
+## Connecting to ArdaDB
+
+ArdaDB exposes a standard ClickHouse HTTP interface and native TCP interface, so any ClickHouse-compatible client works out of the box. Popular options include DBeaver, Tableau, the Python `clickhouse-driver` library, and Pandas via `clickhouse-connect`.
+
+The Python example below connects to ArdaDB and loads a day of MSFT minute bars directly into a DataFrame:
+
+```python
+import clickhouse_connect
+
+client = clickhouse_connect.get_client(
+    host='your-ardadb-host.algoseek.com',
+    port=8443,
+    username='your_username',
+    password='your_password',
+    secure=True
+)
+
+result = client.query(
+    """
+    SELECT TradeDate, Ticker, OpenPrice, ClosePrice, Volume
+    FROM USEquityMarketData.TradeAndQuoteMinuteBar
+    WHERE Ticker = 'MSFT'
+      AND TradeDate = '2024-06-01'
+    ORDER BY BarTime
+    """
+)
+df = result.result_df()
+print(df.head())
+```
+
+Replace `your-ardadb-host.algoseek.com`, `your_username`, and `your_password` with the credentials provided in the AlgoSeek Console after your ArdaDB subscription is activated.
+
+## ArdaDB Plans
+
+ArdaDB Basic comes with a fixed monthly license fee and is well suited for individual researchers and small teams with predictable query volumes. ArdaDB Enterprise is billed based on compute usage and includes higher concurrency limits, dedicated storage tiers, and priority support. There are no extra charges for storage beyond standard cloud provider fees. Contact [sales@algoseek.com](mailto:sales@algoseek.com) for current pricing and to discuss which plan fits your workload.
+
+<Info>
+  ArdaDB currently runs on AWS in the US-East-1 region. Additional regions and cloud platforms are in development.
+</Info>

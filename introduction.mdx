@@ -1,0 +1,78 @@
+---
+title: "AlgoSeek: Institutional-Grade Financial Market Data"
+sidebarTitle: "Introduction"
+description: "AlgoSeek delivers 200+ datasets of tick, bar, and reference data for US equities, options, and futures — with zero downtime since inception."
+---
+
+AlgoSeek provides institutional-grade financial market data for quantitative traders, hedge funds, brokerages, fintechs, and academic researchers. Whether you need nanosecond-precision tick data for high-frequency strategies or clean daily OHLCV bars for backtesting, AlgoSeek covers every US asset class with the quality and reliability that production trading demands.
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Access your first dataset in minutes using the Console or ArdaDB.
+  </Card>
+  <Card title="Data Catalog" icon="database" href="/datasets/equities">
+    Browse 200+ datasets across equities, options, futures, and reference data.
+  </Card>
+  <Card title="Delivery Options" icon="truck-fast" href="/delivery/file-delivery">
+    CSV, SQL, cloud, API, co-location — data delivered your way.
+  </Card>
+  <Card title="ArdaDB" icon="bolt" href="/delivery/ardadb">
+    Query petabytes of pre-loaded market data with plain SQL in milliseconds.
+  </Card>
+</CardGroup>
+
+## What AlgoSeek Offers
+
+AlgoSeek sources data directly from the SIP consolidated feed via co-located ticker plant servers in Equinix NY2 and NY4 data centers. Coverage spans the full US market — all 15+ exchanges and marketplaces — and the archive goes back to 2007.
+
+<CardGroup cols={3}>
+  <Card title="Equities" icon="chart-line" href="/datasets/equities">
+    Tick, second bar, minute bar, daily OHLC, and reference data for US stocks, ETFs, ETNs, and ADRs.
+  </Card>
+  <Card title="Options" icon="sliders" href="/datasets/options">
+    OPRA-sourced TAQ bars, tick data, implied volatility, Greeks, and open interest.
+  </Card>
+  <Card title="Futures" icon="arrow-trend-up" href="/datasets/futures">
+    Tick and bar data for US futures and future options with aggressor flags and exchange condition codes.
+  </Card>
+</CardGroup>
+
+## How to Access Data
+
+AlgoSeek supports multiple access patterns so you can plug data directly into your existing infrastructure.
+
+<CardGroup cols={2}>
+  <Card title="File Delivery" icon="file-csv" href="/delivery/file-delivery">
+    Receive CSV, Parquet, or HDF5 files via SFTP or direct cloud delivery to AWS, GCS, Azure, Snowflake, or Databricks.
+  </Card>
+  <Card title="ArdaDB SQL" icon="table" href="/delivery/ardadb">
+    Instantly query AlgoSeek's pre-loaded historical data using standard SQL — no ingestion required.
+  </Card>
+  <Card title="REST API" icon="plug" href="/delivery/api-access">
+    Pull historical and near-real-time data programmatically via a RESTful interface.
+  </Card>
+  <Card title="Co-Location Feed" icon="server" href="/delivery/colocation">
+    Receive ultra-low-latency (&lt;15 µs) market data feeds directly from AlgoSeek's ticker plant.
+  </Card>
+</CardGroup>
+
+## Getting Started
+
+<Steps>
+  <Step title="Sign up and log in">
+    Create your account and access the [AlgoSeek Console](https://console.algoseek.com/auth/login) to manage subscriptions and delivery settings.
+  </Step>
+  <Step title="Browse the data catalog">
+    Explore the [Data Catalog](/datasets/equities) to identify datasets that match your strategy or research needs.
+  </Step>
+  <Step title="Choose a delivery method">
+    Select the [delivery method](/delivery/file-delivery) that fits your infrastructure — file delivery, SQL, API, or co-location.
+  </Step>
+  <Step title="Start querying">
+    Follow the [Quickstart](/quickstart) guide to run your first query or download your first dataset.
+  </Step>
+</Steps>
+
+<Note>
+  AlgoSeek has maintained zero service downtime since inception, serving 1,850+ institutional subscribers with $350B+ in daily live-trading AUM.
+</Note>

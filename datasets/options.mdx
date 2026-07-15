@@ -1,0 +1,56 @@
+---
+title: "US Options Data: TAQ Bars, Greeks & Open Interest"
+sidebarTitle: "Options"
+description: "AlgoSeek US options datasets span OPRA-sourced TAQ minute bars, tick-level trades and quotes, daily analytics with Greeks, and open interest."
+---
+
+AlgoSeek US options data is derived from the OPRA (Options Price Reporting Authority) feed. The catalog covers all listed US options contracts with continuous historical coverage, giving you a complete record of price, volume, and market microstructure across every expiry and strike. Datasets range from tick-level trades and quotes to daily Greeks and implied volatility computed via Black-Scholes-Merton models — so you can work at whatever resolution your strategy demands.
+
+## Intraday Bar Datasets
+
+OPRA-sourced intraday bar datasets aggregate trade and quote activity into structured time buckets. Each dataset targets a distinct use case, from full microstructure research to lightweight OHLCV backtesting.
+
+| Dataset | Notes | Formats |
+|---|---|---|
+| Trade and Quote Minute Bar | ~60 analytical fields from OPRA consolidated trades + top-of-book quotes | CSV, SQL |
+| Continuous TAQ Minute Bar | 59 analytics, includes OHLC from trades and quotes, NBBO metrics | CSV |
+| Trade Only Minute Bar | OHLCV for options trades, VWAP | CSV, SQL |
+
+## Tick Datasets
+
+Options tick datasets preserve the full OPRA event stream at native resolution. Trade ticks include aggressor-side context, and quote ticks carry full top-of-book or NBBO depth depending on the dataset.
+
+| Dataset | Notes | Formats |
+|---|---|---|
+| Trade and Top of Book Quote | Tick-level trades paired with full top-of-book quote context | CSV |
+| Trade and NBBO Quote | Trades + NBBO quotes only, filtered from OPRA TAQ | CSV, SQL |
+| Trade Only | All listed US options trade ticks | CSV, SQL |
+| GTH Trade Only | Global Trading Hours trade ticks | CSV |
+| Trade and Quote GTH | Global Trading Hours full TAQ | CSV |
+
+## Daily & Reference Datasets
+
+Daily datasets summarize each contract's session activity and provide derived analytics — including theoretical pricing and the full Greeks suite — without requiring you to process raw tick files.
+
+| Dataset | Notes | Formats |
+|---|---|---|
+| Daily Analytics | Theoretical price, IV, Greeks (Black-Scholes-Merton, last-minute mid-prices) | CSV, SQL |
+| Trade and Quote Daily Bar | Daily TAQ summary bar | CSV |
+| Open Interest | Daily open interest per contract | CSV, SQL |
+| OCC Listed Options Daily | OCC-sourced daily settlement data | CSV, SQL |
+| Options Security Master | Contract-level reference data | CSV, SQL |
+| OPRA Security Master | OPRA contract identifiers and metadata | CSV, SQL |
+
+<Tip>
+  Use the Options Daily Analytics dataset for end-of-day Greeks and implied
+  volatility without the bandwidth overhead of processing full tick data.
+</Tip>
+
+<CardGroup cols={2}>
+  <Card title="Options TAQ Minute Bar Reference" icon="table" href="/reference/options-taq-minute-bar">
+    Field-level schema for the Options Trade and Quote Minute Bar dataset, covering all ~60 analytical columns and OPRA condition codes.
+  </Card>
+  <Card title="Options Daily Analytics Reference" icon="chart-line" href="/reference/options-daily-analytics">
+    Complete field definitions for the Daily Analytics dataset, including Greeks methodology, IV calculation inputs, and settlement conventions.
+  </Card>
+</CardGroup>

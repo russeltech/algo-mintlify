@@ -1,0 +1,50 @@
+---
+title: "US Futures TAQ Minute Bar Field Reference"
+sidebarTitle: "Futures TAQ Bar"
+description: "Field reference for the AlgoSeek US Futures TAQ Minute Bar — 50+ analytics including OHLC from trades and quotes, VWAP, spreads, and aggressor counts."
+---
+
+The US Futures Trade and Quote Minute Bar dataset aggregates futures trade prints and top-of-book quote updates into 1-minute bars with 50+ analytics fields. Each bar includes OHLC prices derived from both trades and quotes, VWAP, bid-ask spread statistics, and aggressor trade counts — built for futures strategy backtesting and quantitative research.
+
+## Dataset Summary
+
+| Property | Value |
+|---|---|
+| Resolution | 1 minute |
+| Source | Exchange feeds, millisecond precision |
+| Formats | CSV, SQL |
+| Coverage | All major US futures contracts |
+| Sessions | All trading hours |
+
+## Key Fields
+
+The table below lists the most commonly used fields in the TAQ Minute Bar. The full schema contains 50+ fields including per-exchange volume breakdowns, quote-derived OHLC, and additional spread statistics not shown here.
+
+| Field | Type | Description |
+|---|---|---|
+| BarTime | datetime | Bar opening timestamp (ET) |
+| Symbol | string | Futures contract symbol |
+| OpenTradePrice | float | First trade price in bar |
+| HighTradePrice | float | Highest trade price in bar |
+| LowTradePrice | float | Lowest trade price in bar |
+| CloseTradePrice | float | Last trade price in bar |
+| Volume | int | Contracts traded in bar |
+| TotalTrades | int | Number of trade prints in bar |
+| VWAP | float | Volume-weighted average price |
+| OpenBidPrice | float | Best bid at bar open |
+| CloseAskPrice | float | Best ask at bar close |
+| MeanBidAskSpread | float | Time-weighted mean bid-ask spread |
+| BuyVolume | int | Buyer-aggressor contract volume |
+| SellVolume | int | Seller-aggressor contract volume |
+| ExchangeConditionCode | string | Exchange-specific condition flags |
+
+## Trade Only and Second Bar Variants
+
+If the full 50+ field TAQ bar exceeds your storage or processing needs, AlgoSeek offers two lighter-weight alternatives:
+
+- **Trade Only Minute Bar** — A compact ~10-field schema containing OHLCV, VWAP, and total trade count. This variant drops all quote-derived fields and spread statistics, making it suitable for simple price and volume analysis.
+- **Trade Only Second Bar** — Delivers the same ~10-field Trade Only schema at 1-second resolution. Use this variant when you need finer intrabar granularity without the overhead of tick-level data.
+
+<Note>
+  Futures datasets use millisecond timestamps (not nanosecond) aligned to the bar open time. All timestamps are in Eastern Time.
+</Note>

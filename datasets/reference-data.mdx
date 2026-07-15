@@ -1,0 +1,57 @@
+---
+title: "Reference Data: Security Masters and Corporate Actions"
+sidebarTitle: "Reference Data"
+description: "AlgoSeek reference datasets include security master files, adjustment factors, IPO data, index components, and event-level corporate action records."
+---
+
+Reference data from AlgoSeek ties together market data across datasets and through time. Security masters map identifiers to securities, adjustment factors handle the full history of corporate actions, and event files cover IPOs, trading halts, and index rebalances — giving you the foundation to build research pipelines that remain accurate and consistent regardless of how a security's name, ticker, or structure has changed since 2007.
+
+## Equity Reference Datasets
+
+The equity reference suite covers every layer of identifier mapping, corporate action adjustment, and market event tracking you need to maintain clean, audit-ready historical data.
+
+| Dataset | Description | Formats |
+|---|---|---|
+| Security Master File | Maps SecId to tickers, names, sectors, FIGI, ISIN | CSV, SQL |
+| ASID Lookup | Maps tickers/SecIds to persistent ASIDs for continuous history since 2007 | CSV, SQL |
+| Lookup File | Maps tickers and FIGIs to AlgoSeek SecIds | CSV, SQL |
+| Basic Adjustment Factors | Price and volume multipliers for corporate actions | CSV, SQL |
+| Detailed Adjustment Factors | Event-level adjustment metadata for audit-ready history | CSV, SQL |
+| Cumulative Adjustment Factors | Pre-multiplied cumulative adjustment series | CSV |
+| Basic Shares Outstanding | Daily shares outstanding | CSV, SQL |
+| Detailed Shares Outstanding | Detailed class-level shares outstanding | CSV, SQL |
+| IPO | IPO event dates and ticker details | CSV, SQL |
+| IPO Detailed | Extended IPO metadata | CSV, SQL |
+| Index Components | Index membership and weights over time | CSV |
+| Market Holidays | US market holiday schedule | CSV, SQL |
+| Trading Halts | Real-time and historical halt events | CSV, SQL |
+| SSR Circuit Breakers | Short sale restriction activation events | CSV, SQL |
+| Announcements | Corporate announcement events | CSV, SQL |
+
+## Options Reference Datasets
+
+Options reference data provides the contract-level metadata and settlement records you need to correctly interpret options market data, manage expiry calendars, and reconcile settlement prices.
+
+| Dataset | Description | Formats |
+|---|---|---|
+| Options Security Master | Contract-level reference data including expiry, strike, underlying | CSV, SQL |
+| OPRA Contracts Security Master | OPRA contract identifiers and metadata | CSV, SQL |
+| OCC Special Settlements | OCC-listed special settlement events | CSV, SQL |
+| OCC Listed Options Daily | Daily OCC settlement prices | CSV, SQL |
+
+## Using Identifiers
+
+AlgoSeek market data uses several identifier types that serve different purposes across the catalog:
+
+- **SecId** — AlgoSeek's internal security identifier, assigned per listing. Use SecId to join intraday and daily datasets to the Security Master File.
+- **ASID** (AlgoSeek Security ID) — A persistent identifier that follows a security through ticker changes, exchanges moves, and corporate actions. Use ASID when building time-series that must span the full history since 2007 without gaps or duplicates.
+- **FIGI** — The Financial Instrument Global Identifier (OpenFIGI). Use FIGI to cross-reference AlgoSeek data against third-party data sources and vendor systems.
+- **ISIN** — The International Securities Identification Number. Use ISIN for cross-border security identification and regulatory reporting.
+
+The Lookup File and ASID Lookup datasets are your primary tools for translating between these identifiers. For a deeper explanation of how identifier mapping works across the full catalog, see the [Identifiers](/concepts/identifiers) concept guide.
+
+<Info>
+  All reference datasets are versioned alongside market data. When subscribing
+  to a market dataset, add the corresponding reference dataset to maintain
+  consistent identifier mapping over time.
+</Info>

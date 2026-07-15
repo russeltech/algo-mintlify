@@ -1,0 +1,63 @@
+---
+title: "AlgoSeek Frequently Asked Questions"
+sidebarTitle: "FAQ"
+description: "Answers to common questions about AlgoSeek data quality, delivery, subscriptions, ArdaDB, corporate actions, and real-time feed access."
+---
+
+This page answers the most common questions from AlgoSeek subscribers. If you don't find your answer here, contact [support@algoseek.com](mailto:support@algoseek.com) and the support team will respond promptly.
+
+<AccordionGroup>
+  <Accordion title="What is the history depth of AlgoSeek data?">
+    AlgoSeek data goes back to **2007** for most US equity, options, and futures datasets. Specific start dates vary by dataset — check the dataset detail page in the Console or contact [support@algoseek.com](mailto:support@algoseek.com) for confirmation on a particular product.
+  </Accordion>
+
+  <Accordion title="What time zone are timestamps in?">
+    All timestamps are in **Eastern Time (ET)**. See the Timestamps guide for details on precision levels (millisecond, microsecond, nanosecond) and bar open/close conventions.
+  </Accordion>
+
+  <Accordion title="How quickly is daily data available after market close?">
+    Daily files are typically available **2–4 hours after market close**. For end-of-day datasets, this means data is generally available by approximately **8–10 PM ET**. If a file has not arrived by 10 PM ET, contact [support@algoseek.com](mailto:support@algoseek.com) with your subscription ID and dataset name.
+  </Accordion>
+
+  <Accordion title="What is the difference between TAQ and Trade Only datasets?">
+    **TAQ (Trade and Quote)** datasets include both trade prints and top-of-book quote updates, giving you full NBBO context for every moment of the trading day. **Trade Only** datasets contain only executed trade prints — lower data volume, simpler structure, and suitable for use cases where quote-level detail is not required, such as volume analysis or transaction cost estimation.
+  </Accordion>
+
+  <Accordion title="What is FINRA/TRF data and should I exclude it?">
+    FINRA TRF (Trade Reporting Facility) records cover trades executed off public exchanges — including dark pools, broker-dealer internalization, and block trades. Because the reporting window allows up to a **10-second delay**, these prints can appear at prices outside the prevailing NBBO and at timestamps that do not reflect actual execution time.
+
+    For backtests that rely on exchange-only price discovery, use the **"Excluding FINRA/TRF"** dataset variants to avoid distortion from off-exchange prints.
+  </Accordion>
+
+  <Accordion title="How does ArdaDB pricing work?">
+    **ArdaDB Basic** is billed at a fixed monthly fee. **ArdaDB Enterprise** is billed based on actual compute usage, making it cost-efficient for workloads with variable query intensity. No additional charges are applied for storage beyond standard cloud provider fees. Contact [sales@algoseek.com](mailto:sales@algoseek.com) for current pricing tiers and volume discounts.
+  </Accordion>
+
+  <Accordion title="Can I bring my own data into ArdaDB?">
+    Yes. ArdaDB supports importing data from a wide range of sources and formats, including:
+
+    - **Databases:** PostgreSQL, BigQuery, Redshift, Snowflake, MongoDB
+    - **File formats:** CSV, TSV, JSON, Parquet
+
+    Your imported data is stored in dedicated EBS or S3 storage provisioned for your account, kept separate from the shared AlgoSeek data catalog while remaining queryable through the same ArdaDB interface.
+  </Accordion>
+
+  <Accordion title="How do I handle corporate actions in backtests?">
+    Use the **Detailed Adjustment Factors** or **Basic Adjustment Factors** datasets to construct adjusted price series from raw unadjusted data. Alternatively, subscribe to one of the pre-adjusted dataset variants if you prefer to receive split- and dividend-adjusted prices directly. See the Corporate Actions guide for worked examples of both approaches.
+  </Accordion>
+
+  <Accordion title="What formats are available for file delivery?">
+    AlgoSeek supports the following delivery formats:
+
+    - **Columnar / binary:** Parquet, HDF5, Feather / Arrow
+    - **Text-based:** CSV, TSV, JSON
+    - **Financial:** FIX
+    - **Spreadsheet:** Excel (.xlsx)
+
+    Contact [support@algoseek.com](mailto:support@algoseek.com) to configure your preferred format or to request a format not listed here.
+  </Accordion>
+
+  <Accordion title="Is global (non-US) data available?">
+    Global market data coverage is currently in development. Contact [sales@algoseek.com](mailto:sales@algoseek.com) to register your interest and be notified when international datasets become available.
+  </Accordion>
+</AccordionGroup>

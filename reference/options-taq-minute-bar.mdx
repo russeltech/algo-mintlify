@@ -1,0 +1,49 @@
+---
+title: "US Options TAQ Minute Bar Field Reference"
+sidebarTitle: "Options TAQ Bar"
+description: "Field reference for AlgoSeek US Options TAQ Minute Bar — 60 analytics fields derived from OPRA consolidated trades and top-of-book quotes per 1-minute bar."
+---
+
+The US Options Trade and Quote Minute Bar dataset aggregates OPRA-sourced option trade prints and top-of-book quote updates into 1-minute bars. Each bar contains ~60 analytical fields covering OHLC from both trades and quotes, NBBO spread metrics, VWAP, and aggressor trade counts — designed for options strategy backtesting and quantitative research.
+
+## Dataset Summary
+
+| Property | Value |
+|---|---|
+| Resolution | 1 minute |
+| Source | OPRA (Options Price Reporting Authority) |
+| Formats | CSV, SQL |
+| Coverage | All listed US options contracts |
+| Sessions | Regular and extended trading hours |
+
+## Key Fields
+
+The table below describes the core fields available in every Options TAQ Minute Bar record. The full schema extends to ~60 columns including additional quote depth, trade condition flags, and exchange-level breakdowns.
+
+| Field | Type | Description |
+|---|---|---|
+| BarTime | datetime | Bar opening timestamp (ET) |
+| ContractId | string | AlgoSeek options contract identifier |
+| Underlying | string | Underlying ticker symbol |
+| Expiration | date | Contract expiration date |
+| Strike | float | Strike price |
+| OptionType | string | `C` (call) or `P` (put) |
+| OpenTradePrice | float | First trade price in bar |
+| CloseTradePrice | float | Last trade price in bar |
+| HighTradePrice | float | Highest trade price in bar |
+| LowTradePrice | float | Lowest trade price in bar |
+| Volume | int | Contracts traded in bar |
+| VWAP | float | Volume-weighted average trade price |
+| OpenBidPrice | float | NBBO bid price at bar open |
+| CloseAskPrice | float | NBBO ask price at bar close |
+| MeanBidAskSpread | float | Time-weighted mean bid-ask spread |
+| BuyVolume | int | Buyer-initiated contract volume |
+| SellVolume | int | Seller-initiated contract volume |
+
+## Continuous TAQ Minute Bar Variant
+
+The **Continuous TAQ Minute Bar** variant extends the standard dataset with 59 analytics fields and continuous contract chaining across expiration rolls. Rather than treating each contract independently, this variant stitches together price and volume history across roll dates — making it well suited for strategies that require uninterrupted time series across contract expirations, such as term structure models or delta-neutral backtests.
+
+<Tip>
+  Join the Options TAQ Minute Bar with the OPRA Security Master to look up contract details (underlying, expiry, strike) by ContractId.
+</Tip>

@@ -1,0 +1,93 @@
+---
+title: "Access AlgoSeek Market Data via REST API"
+sidebarTitle: "REST API"
+description: "AlgoSeek's REST API lets you pull historical and near-real-time market data programmatically for any ticker, date range, and dataset with JSON responses."
+---
+
+The AlgoSeek REST API provides programmatic access to historical and near-real-time market data. Use it to integrate datasets directly into applications, dashboards, research notebooks, or automated trading systems — without managing file transfers or a local database. Every request returns clean, structured JSON you can parse immediately.
+
+## Authentication
+
+API requests use an API key passed in the `Authorization` header. Include the header on every request:
+
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+  "https://api.algoseek.com/v1/equity/bars/minute?ticker=AAPL&start=2024-01-02&end=2024-01-05"
+```
+
+<Note>
+  Retrieve your API key from the AlgoSeek Console under **Settings > API Keys**. Keep your key confidential — do not expose it in client-side code or commit it to version control.
+</Note>
+
+## Base URL and Versioning
+
+All API requests target the following base URL:
+
+```
+https://api.algoseek.com/v1
+```
+
+All responses are JSON. API versions are stable — existing endpoints will not break without advance notice. Check the Console for any deprecation notices before upgrading integrations to a new version.
+
+## Common Endpoints
+
+| Endpoint | Description |
+|---|---|
+| `GET /equity/bars/minute` | Minute bar data for a US equity ticker |
+| `GET /equity/bars/daily` | Daily OHLCV for a US equity ticker |
+| `GET /equity/ticks` | Tick-level trade and quote data |
+| `GET /options/bars/minute` | Minute bar data for an options contract |
+| `GET /options/daily-analytics` | Daily Greeks and IV for an options contract |
+| `GET /futures/bars/minute` | Minute bar data for a futures contract |
+| `GET /reference/security-master` | Security master lookup by ticker or SecId |
+
+## Query Parameters
+
+Combine the following parameters to scope your request to exactly the data you need:
+
+| Parameter | Type | Description |
+|---|---|---|
+| `ticker` | string | Ticker symbol (e.g., `AAPL`) |
+| `start` | string | Start date in `YYYY-MM-DD` format |
+| `end` | string | End date in `YYYY-MM-DD` format |
+| `fields` | string | Comma-separated list of fields to return |
+| `format` | string | Response format: `json` (default), `csv` |
+
+## Example Response
+
+A request to `GET /equity/bars/minute` returns a ticker-keyed object with an array of bar records. Each record includes open, high, low, and close prices alongside volume and VWAP:
+
+```json
+{
+  "ticker": "AAPL",
+  "data": [
+    {
+      "DateTime": "2024-01-02T09:30:00",
+      "OpenPrice": 185.42,
+      "HighPrice": 185.88,
+      "LowPrice": 184.97,
+      "ClosePrice": 185.64,
+      "Volume": 1248500,
+      "VWAP": 185.51
+    }
+  ]
+}
+```
+
+Use the `fields` parameter to limit the response to only the columns your application needs, reducing payload size and improving response times on large date ranges.
+
+## Rate Limits and Errors
+
+The API uses standard HTTP status codes to communicate the outcome of every request. Retry transient errors with exponential backoff.
+
+| Status | Meaning |
+|---|---|
+| 401 | Missing or invalid API key |
+| 403 | Dataset not in your subscription |
+| 429 | Rate limit exceeded — retry after the `Retry-After` header value |
+| 404 | Ticker or date range not found |
+| 500 | Server error — contact support@algoseek.com |
+
+<Info>
+  Contact [sales@algoseek.com](mailto:sales@algoseek.com) to enable API access on your subscription and receive your API key.
+</Info>

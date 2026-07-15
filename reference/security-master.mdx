@@ -1,0 +1,73 @@
+---
+title: "Security Master and ASID Lookup Field Reference"
+sidebarTitle: "Security Master"
+description: "Field reference for AlgoSeek Security Master File and ASID Lookup — identifier mapping for US equities from SecId, ticker, FIGI, and ISIN to persistent ASID."
+---
+
+The AlgoSeek Security Master File and ASID Lookup are foundational reference datasets for any AlgoSeek subscriber. The Security Master maps current and historical US equity identifiers, while the ASID Lookup enables continuous price history across ticker changes, mergers, and exchange transfers dating back to 2007.
+
+## Security Master File
+
+The Security Master contains one record per active ticker per day, giving you a point-in-time snapshot of every listed US equity instrument. Use it to enrich price data with company metadata, validate identifiers, or build universe filters based on security type and sector.
+
+| Field | Type | Description |
+|---|---|---|
+| Date | date | Date the record is valid |
+| SecId | string | AlgoSeek security identifier |
+| Ticker | string | Exchange-assigned ticker symbol |
+| CompanyName | string | Company or fund name |
+| Exchange | string | Primary listing exchange |
+| Sector | string | GICS or SIC sector classification |
+| Industry | string | Industry classification |
+| FIGI | string | Financial Instrument Global Identifier |
+| ISIN | string | International Securities Identification Number |
+| SecurityType | string | Stock, ETF, ETN, ADR, Fund, etc. |
+| SharesOutstanding | int | Total shares outstanding (if available) |
+
+## ASID Lookup File
+
+The ASID Lookup maps tickers and SecIds to persistent AlgoSeek Security IDs (ASIDs). Because tickers are reused and companies change their symbols, a persistent ASID is the correct key for stitching together multi-year price history. The file contains one record per ticker/SecId per date period, with open-ended `EndDate` values (null) indicating currently active mappings.
+
+| Field | Type | Description |
+|---|---|---|
+| StartDate | date | First date this mapping is valid |
+| EndDate | date | Last date this mapping is valid (null = still active) |
+| Ticker | string | Ticker symbol during this period |
+| SecId | string | AlgoSeek SecId during this period |
+| ASID | string | Persistent AlgoSeek Security ID |
+
+## Lookup File
+
+The Lookup File maps tickers and FIGIs to AlgoSeek SecIds. It is useful when you need to match AlgoSeek data against FIGI-identified instruments sourced from third-party providers such as Bloomberg Open Symbology or OpenFIGI. The schema is intentionally compact:
+
+| Field | Type | Description |
+|---|---|---|
+| Date | date | Date the mapping is valid |
+| Ticker | string | Exchange-assigned ticker symbol |
+| FIGI | string | Financial Instrument Global Identifier |
+| SecId | string | AlgoSeek security identifier |
+
+## Usage Example
+
+The snippet below shows a typical workflow for joining the Security Master to a minute bar file, adding company name, sector, and FIGI to each bar record.
+
+```python
+import pandas as pd
+
+# Load Security Master for a specific date
+sm = pd.read_csv('security_master_2024-01-02.csv')
+
+# Load minute bar data
+bars = pd.read_csv('AAPL_taq_1min_2024-01-02.csv')
+
+# Add sector and company name to bars
+bars = bars.merge(
+    sm[['Ticker', 'CompanyName', 'Sector', 'FIGI']],
+    on='Ticker',
+    how='left'
+)
+```
+
+<Note>
+  Download the Security Master daily — securities can be added, renamed, or reclassified at any time. Stale reference data causes silent join failures.
+</Note>

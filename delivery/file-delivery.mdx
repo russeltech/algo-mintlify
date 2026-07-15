@@ -1,0 +1,61 @@
+---
+title: "Receive AlgoSeek Data via File Delivery and Cloud"
+sidebarTitle: "File Delivery"
+description: "AlgoSeek delivers historical and near-real-time data as CSV, Parquet, HDF5, Feather, or FIX files via SFTP, AWS S3, Google Cloud, Azure, Snowflake, or Databricks."
+---
+
+File delivery is AlgoSeek's most flexible access method. You receive structured data files — daily or on-demand — pushed directly to your storage infrastructure. No ingestion pipeline required on your end: AlgoSeek handles the formatting, partitioning, and transfer so your team can start working with data immediately.
+
+## Supported File Formats
+
+AlgoSeek supports a wide range of output formats to match your downstream toolchain. Choose the format that best fits your analytics stack or operational system.
+
+| Format | Best For |
+|---|---|
+| CSV | Universal compatibility, easy inspection |
+| Parquet | Analytics engines (Spark, Pandas, DuckDB) |
+| HDF5 | High-performance scientific computing |
+| Feather / Arrow | Ultra-fast in-memory analytics |
+| FIX | FIX-protocol financial systems |
+| JSON | Web services and REST pipelines |
+| Excel | Spreadsheet workflows |
+
+<Tip>
+  For large historical orders (multi-year, full universe), Parquet or HDF5 significantly reduces transfer size and speeds up downstream loading versus CSV.
+</Tip>
+
+## Delivery Destinations
+
+AlgoSeek pushes files directly to your destination. You do not need to pull data from an AlgoSeek-managed location — files land where your infrastructure already lives. Supported targets include:
+
+- AWS S3 (any region)
+- Google Cloud Storage
+- Azure Blob Storage
+- Snowflake (direct stage load)
+- Databricks (Delta Lake)
+- SFTP server
+- Data lakes and warehouses
+
+<Note>
+  Configure your delivery destination in the AlgoSeek Console. For cloud targets, provide AlgoSeek with write credentials or a pre-signed upload path.
+</Note>
+
+## File Organization
+
+Equity data files are organized by date and ticker, making it straightforward to locate specific instruments or trading sessions. The standard directory layout for intraday datasets follows this structure:
+
+```
+/USEquities/TradeAndQuoteMinuteBar/
+  2024/01/02/
+    AAPL.csv
+    MSFT.csv
+    ...
+```
+
+One CSV file per active ticker per trading day is the standard layout for intraday datasets. Each file contains all bars or ticks for that instrument on that session, with column headers included on the first row. Date directories use the ISO 8601 format `YYYY/MM/DD` for natural sort ordering across operating systems and cloud storage browsers.
+
+## Delivery Schedule
+
+Daily files are typically available within 2–4 hours after market close. Historical backtests are fulfilled within 1–3 business days after order confirmation, depending on dataset size and universe breadth.
+
+On-demand delivery can be configured for custom time ranges via the Console or by contacting support. If you require a recurring custom delivery window — for example, pre-market delivery of prior-day data — reach out to your AlgoSeek account representative to arrange a tailored schedule.

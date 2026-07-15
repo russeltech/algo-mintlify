@@ -1,47 +1,71 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with AlgoSeek Market Data"
+sidebarTitle: "Quickstart"
+description: "Learn how to access your first AlgoSeek dataset in three steps — from Console login to querying live data via ArdaDB SQL or file delivery."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+AlgoSeek gives you access to 200+ institutional-grade datasets spanning equities, options, futures, and more. This guide walks you through logging into the Console, picking a dataset, and retrieving data — whether via ArdaDB SQL, file delivery, or API — so you can go from credentials to querying in minutes.
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
 
-    ```bash
-    npm install your-package
-    ```
+  <Step title="Log In to the Console">
+    Navigate to [console.algoseek.com/auth/login](https://console.algoseek.com/auth/login) and enter the credentials provided when your subscription was activated. Once logged in, your dashboard displays your active subscriptions, delivery settings, and full data catalog access. If you haven't received credentials yet, contact [sales@algoseek.com](mailto:sales@algoseek.com).
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
 
-    ```bash
-    your-cli init
-    ```
+  <Step title="Browse the Data Catalog">
+    In the left navigation, go to **Data → Data Sets**. Use the filters to narrow by asset class — **Equity**, **Options**, or **Futures** — and by data type: **Tick**, **Intraday Bar**, **Daily**, or **Reference**. Click any dataset card to open its full field documentation, schema reference, and downloadable sample data.
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
 
-    ```bash
-    your-cli start
-    ```
+  <Step title="Choose Your Access Method">
+    AlgoSeek supports four delivery modes. Select the one that best fits your workflow:
+
+    | Method | Best For | Latency | Formats |
+    |---|---|---|---|
+    | **ArdaDB SQL** | Backtesting, research, ad-hoc queries | Seconds | SQL |
+    | **File Delivery** | Bulk data, pipeline ingest | Hours / daily | CSV, Parquet, HDF5, FIX, Feather |
+    | **REST API** | App integration, programmatic access | Near real-time | JSON |
+    | **Co-Location Feed** | HFT, market making, low-latency trading | \<15 µs | Binary, TCP/Multicast |
   </Step>
+
+  <Step title="Run Your First Query">
+    Connect to **ArdaDB** using the connection string shown in your Console under **Delivery Settings → ArdaDB**. Then run the query below to pull Apple's minute-bar trade data for January 2024:
+
+    ```sql
+    SELECT
+        TradeDate,
+        Ticker,
+        OpenPrice,
+        ClosePrice,
+        sum(Volume) AS TotalVolume
+    FROM USEquityMarketData.TradeAndQuoteMinuteBar
+    WHERE Ticker = 'AAPL'
+      AND TradeDate BETWEEN '2024-01-01' AND '2024-01-31'
+    GROUP BY TradeDate, Ticker, OpenPrice, ClosePrice
+    ORDER BY TradeDate
+    ```
+
+    <Note>
+      Results stream back in seconds even when scanning billions of rows. ArdaDB's columnar engine is purpose-built for time-series financial data at institutional scale.
+    </Note>
+  </Step>
+
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+## What's Next
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
-</Tip>
+Explore the datasets available in your subscription or dive deeper into a specific delivery method.
+
+<CardGroup cols={2}>
+  <Card title="Browse Equities" icon="chart-line" href="/datasets/equities">
+    Explore tick, minute-bar, and daily equity datasets including TAQ, OHLCV, and reference data.
+  </Card>
+  <Card title="Browse Options" icon="layer-group" href="/datasets/options">
+    Access full options chain data, greeks, and end-of-day snapshots for US listed options.
+  </Card>
+  <Card title="ArdaDB Guide" icon="database" href="/delivery/ardadb">
+    Learn how to connect to ArdaDB, write efficient SQL queries, and manage result sets.
+  </Card>
+  <Card title="File Delivery" icon="file-arrow-down" href="/delivery/file-delivery">
+    Configure SFTP or cloud bucket delivery for bulk CSV, Parquet, HDF5, and Feather files.
+  </Card>
+</CardGroup>

@@ -1,0 +1,85 @@
+---
+title: "US Equities Trade and Quote Minute Bar Reference"
+sidebarTitle: "TAQ Minute Bar"
+description: "Field-level reference for the AlgoSeek US Equities TAQ Minute Bar dataset — 60+ metrics including OHLC, VWAP, NBBO spread, and order-flow measures."
+---
+
+The US Equities Trade and Quote (TAQ) Minute Bar dataset aggregates top-of-book quotes and trade prints from all 15+ US exchanges into 1-minute bars. Each bar contains 60+ fields covering OHLC prices from both trades and quotes, VWAP, NBBO spread statistics, order-flow imbalance, and time-weighted quote measures — built for quantitative trading, backtesting, and machine learning feature engineering.
+
+## Dataset Summary
+
+| Property | Value |
+|---|---|
+| Resolution | 1 minute |
+| History | 2007 to present |
+| Coverage | All listed US equities, ETFs, ETNs, ADRs |
+| Source | SIP consolidated feed |
+| Formats | CSV, SQL |
+| Sessions | Pre-market (4:00 AM ET) through post-market close |
+
+## File Organization
+
+AlgoSeek delivers one CSV file per ticker per trading day. Files are organized by date under the following path structure:
+
+```
+/USEquities/TradeAndQuoteMinuteBar/YYYY/MM/DD/TICKER.csv
+```
+
+For example, AAPL data for January 2, 2024 would be found at:
+
+```
+/USEquities/TradeAndQuoteMinuteBar/2024/01/02/AAPL.csv
+```
+
+## Key Fields
+
+The table below describes the most frequently used fields. The full schema contains 60+ columns — contact AlgoSeek for a complete data dictionary.
+
+| Field | Type | Description |
+|---|---|---|
+| BarTime | datetime | Bar opening timestamp (ET, minute boundary) |
+| OpenTradePrice | float | First trade price in bar |
+| HighTradePrice | float | Highest trade price in bar |
+| LowTradePrice | float | Lowest trade price in bar |
+| CloseTradePrice | float | Last trade price in bar |
+| TotalVolume | int | Total shares traded in bar |
+| TotalTrades | int | Number of trade prints in bar |
+| VWAP | float | Volume-weighted average trade price |
+| OpenBidPrice | float | NBBO bid price at bar open |
+| CloseBidPrice | float | NBBO bid price at bar close |
+| OpenAskPrice | float | NBBO ask price at bar open |
+| CloseAskPrice | float | NBBO ask price at bar close |
+| MeanBidAskSpread | float | Time-weighted mean bid-ask spread |
+| BuyVolume | int | Volume of buyer-initiated trades |
+| SellVolume | int | Volume of seller-initiated trades |
+| NumBidAskChanges | int | Number of NBBO quote updates |
+| OpenBidSize | int | Aggregate bid size at NBBO at bar open |
+| CloseAskSize | int | Aggregate ask size at NBBO at bar close |
+
+## Standard vs No-FINRA/TRF
+
+AlgoSeek provides two versions of the TAQ Minute Bar to support different analytical needs:
+
+<CardGroup cols={2}>
+  <Card title="Standard" icon="chart-mixed">
+    Includes all SIP trade prints, including FINRA TRF (Trade Reporting Facility) off-exchange and dark pool executions. Use this version for comprehensive volume and market microstructure analysis that accounts for the full spectrum of US equity trading activity.
+  </Card>
+  <Card title="No-FINRA/TRF" icon="building-columns">
+    Excludes dark pool, TRF, and odd-lot trades, retaining only lit-exchange executions. This version produces cleaner OHLC ranges and more representative NBBO metrics — the preferred choice for exchange-only signal generation and intraday strategy backtesting.
+  </Card>
+</CardGroup>
+
+## Sample Data
+
+The following rows illustrate the CSV format for a single ticker on a single trading day. Only a subset of available fields is shown.
+
+```csv
+BarTime,OpenTradePrice,HighTradePrice,LowTradePrice,CloseTradePrice,TotalVolume,TotalTrades,VWAP,MeanBidAskSpread
+2024-01-02 09:30:00,185.42,185.88,184.97,185.64,1248500,4231,185.51,0.0142
+2024-01-02 09:31:00,185.64,186.12,185.55,186.05,843200,2871,185.89,0.0138
+2024-01-02 09:32:00,186.05,186.33,185.92,186.18,712900,2344,186.14,0.0155
+```
+
+<Note>
+  Continuous bars are provided for every minute from 4:00 AM ET. During low-activity periods, OHLC quote fields will carry the previous bar's closing NBBO forward.
+</Note>

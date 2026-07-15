@@ -1,0 +1,82 @@
+---
+title: "Equity Adjustment Factors Field Reference"
+sidebarTitle: "Adjustment Factors"
+description: "Field reference for AlgoSeek Basic, Detailed, and Cumulative Adjustment Factor datasets — price and volume multipliers for US equity corporate action events."
+---
+
+AlgoSeek's equity adjustment factor datasets give you the multipliers needed to build historically consistent, corporate-action-adjusted price series. Three variants are available — basic, detailed, and cumulative — offering increasing levels of metadata for audit-ready backtesting and custom adjustment logic.
+
+## Dataset Variants
+
+| Dataset | Granularity | Best For | Formats |
+|---|---|---|---|
+| Basic Adjustment Factors | One row per corporate action event | Standard backtesting, simple adjustments | CSV, SQL |
+| Detailed Adjustment Factors | One row per event with full metadata | Audit-ready history, custom logic | CSV, SQL |
+| Cumulative Adjustment Factors | Pre-multiplied cumulative factor per date | Direct multiplication without looping | CSV |
+| Daily Cumulative Adjustment Factors | Daily cumulative factor | Daily OHLC adjustment | CSV |
+
+## Basic Adjustment Factors Fields
+
+| Field | Type | Description |
+|---|---|---|
+| ExDate | date | Corporate action ex-date |
+| Ticker | string | Equity ticker at time of event |
+| SecId | string | AlgoSeek security identifier |
+| PriceFactor | float | Multiply historical prices by this factor |
+| VolumeFactor | float | Multiply historical volumes by this factor |
+
+## Detailed Adjustment Factors Fields
+
+| Field | Type | Description |
+|---|---|---|
+| ExDate | date | Corporate action ex-date |
+| RecordDate | date | Date of record |
+| Ticker | string | Equity ticker |
+| SecId | string | AlgoSeek security identifier |
+| ActionType | string | Type of action (Split, Dividend, SpinOff, Merger, etc.) |
+| SplitRatio | string | Split ratio (e.g., '2:1' for a 2-for-1 split) |
+| DividendAmount | float | Cash dividend amount per share (if applicable) |
+| PriceFactor | float | Price adjustment multiplier |
+| VolumeFactor | float | Volume adjustment multiplier |
+| Notes | string | Additional event metadata |
+
+## Cumulative Adjustment Factors Fields
+
+| Field | Type | Description |
+|---|---|---|
+| Date | date | Effective date of cumulative factor |
+| Ticker | string | Equity ticker |
+| SecId | string | AlgoSeek security identifier |
+| CumulativePriceFactor | float | Multiply raw historical price by this to get present-equivalent price |
+| CumulativeVolumeFactor | float | Multiply raw historical volume by this factor |
+
+## Applying Basic Adjustment Factors
+
+Use the basic adjustment factors file to apply a backward adjustment pass over your raw OHLC series. The example below iterates events in reverse chronological order so that each factor is applied only to dates that precede that event's ex-date.
+
+```python
+import pandas as pd
+
+# Load raw prices (e.g., daily OHLC)
+prices = pd.read_csv('TSLA_daily_ohlc.csv', parse_dates=['TradeDate'])
+
+# Load basic adjustment factors for the same ticker
+factors = pd.read_csv('TSLA_basic_adj_factors.csv', parse_dates=['ExDate'])
+
+# Sort factors by ExDate descending and apply backward adjustment
+for _, event in factors.sort_values('ExDate', ascending=False).iterrows():
+    mask = prices['TradeDate'] < event['ExDate']
+    for col in ['OpenPrice', 'HighPrice', 'LowPrice', 'ClosePrice']:
+        prices.loc[mask, col] *= event['PriceFactor']
+    prices.loc[mask, 'Volume'] *= event['VolumeFactor']
+
+print(prices.head())
+```
+
+<Warning>
+  Re-download adjustment factors after each market close. New or revised corporate actions are applied retroactively — a factor file from a prior week may be incomplete.
+</Warning>
+
+## Using Cumulative Factors
+
+If you use the Cumulative Adjustment Factors file, each row already contains the combined multiplier from all events prior to that date through the present. Multiply the raw price by the `CumulativePriceFactor` for the corresponding date — no looping required. This makes the cumulative variant the fastest path to a fully adjusted series when you do not need per-event attribution.

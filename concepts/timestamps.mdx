@@ -1,0 +1,55 @@
+---
+title: "Timestamps, Time Zones, and Trading Sessions"
+sidebarTitle: "Timestamps"
+description: "AlgoSeek timestamps are in Eastern Time (ET) with nanosecond precision for ticks and minute-boundary alignment for bars. Learn the session schedule and bar time conventions."
+---
+
+All AlgoSeek market data timestamps are in Eastern Time (ET) — UTC−5 during Eastern Standard Time and UTC−4 during Eastern Daylight Time. Understanding timestamp conventions helps you correctly align data across datasets and avoid off-by-one errors at session boundaries, particularly when merging tick and bar data or comparing AlgoSeek data with UTC-based sources.
+
+## Precision by Data Type
+
+Timestamp precision varies by data type, reflecting the underlying exchange feed granularity for each asset class:
+
+| Data Type | Timestamp Precision | Field Name |
+|---|---|---|
+| Equity tick (TAQ) | Nanosecond | `DateTime` |
+| Futures tick | Millisecond | `DateTime` |
+| Options tick | Millisecond | `DateTime` |
+| Minute bar | Minute (bar open time) | `BarTime` / `DateTime` |
+| Second bar | Second (bar open time) | `BarTime` |
+| Daily data | Date only | `TradeDate` |
+
+## Bar Time Convention
+
+Bar timestamps represent the **opening time** of the bar interval, not the closing time. A bar labeled `09:30:00` covers all activity from `09:30:00` (inclusive) through `09:30:59.999...` (exclusive). This left-closed, right-open convention is consistent across all AlgoSeek bar products — second bars, minute bars, and any future interval additions.
+
+When joining bar data to event data (earnings announcements, halt notifications), always compare the event timestamp to the bar's opening time, not its closing time, to avoid inadvertently including the bar that straddles the event boundary.
+
+<Tip>
+  When loading minute bar data into Pandas, parse `BarTime` as Eastern Time:
+  `pd.to_datetime(df['BarTime']).dt.tz_localize('America/New_York')`
+</Tip>
+
+## Trading Session Coverage
+
+AlgoSeek organizes market data into three trading sessions. All times are Eastern Time:
+
+| Session | Hours (ET) | Coverage |
+|---|---|---|
+| Pre-Market | 04:00 – 09:29:59 | Extended TAQ bars, tick data |
+| Regular Market Hours | 09:30 – 16:00 | All datasets |
+| Post-Market | 16:00:01 – 20:00 | Extended TAQ bars, tick data |
+
+AlgoSeek TAQ bars provide **continuous bars** across all three sessions — a bar record exists for every minute from 04:00 through the end of post-market even if no trades occurred during that interval. This eliminates the need to handle gaps in your time series logic, though you should expect many bars outside regular hours to contain zero trade volume for less-liquid instruments.
+
+## NBBO Carry-Forward
+
+If no quote updates arrive during a bar period, the previous bar's closing NBBO is carried forward into the current bar. When this happens, the bid/ask Open, High, Low, and Close fields within that bar will all be equal to each other, reflecting a static quote rather than a range of quote activity.
+
+This is expected behavior and not a data quality issue. It occurs most frequently for illiquid instruments, very short intervals (second bars), and periods outside regular trading hours when market makers are not actively quoting. You can identify these bars programmatically by checking whether `BidOpen == BidClose` and `AskOpen == AskClose`.
+
+## Daylight Saving Time
+
+AlgoSeek data follows the US Daylight Saving Time schedule automatically. No special handling is required on your end — timestamps are always expressed in local ET regardless of whether DST is in effect. The UTC offset shifts from UTC−5 to UTC−4 on the second Sunday in March and back on the first Sunday in November.
+
+Exercise caution when comparing AlgoSeek data with UTC-timestamped data from other sources during DST transition weekends. A one-hour apparent gap or overlap in aligned datasets across those dates is almost always a time zone offset issue rather than a data gap.

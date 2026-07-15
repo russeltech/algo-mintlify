@@ -1,0 +1,57 @@
+---
+title: "AlgoSeek Ticker Plant as a Service"
+sidebarTitle: "Ticker Plant"
+description: "AlgoSeek's third-generation ticker plant processes raw exchange feeds into normalized market data, available as a managed cloud or on-premises service."
+---
+
+AlgoSeek's third-generation ticker plant processes raw PCAP data and exchange feeds from all major US stock exchanges, normalizing them into clean, queryable market data. Available as a managed cloud service or an on-premises deployment, it eliminates the substantial cost and operational complexity of building and maintaining your own exchange connectivity infrastructure — so your engineering team can focus on what happens after the data arrives.
+
+## What the Ticker Plant Does
+
+- Connects to and processes data feeds from all major US stock exchanges
+- Normalizes raw PCAPs into structured, standardized trade and quote records
+- Calculates the National Best Bid and Offer (NBBO), LULD price bands, Short Sale Rule (SSR) flags, and regulatory halt states in real time
+- Stores processed data in a row-based SQL-queryable database for immediate downstream use
+- Outputs data via multicast, TCP socket, WebSocket, RESTful API, or Kafka streaming
+- Supports time-machine feed replay for strategy testing, compliance review, and disaster recovery scenarios
+
+## Output Methods
+
+| Output | Protocol | Best For |
+|---|---|---|
+| Multicast | UDP | Market data distribution to multiple simultaneous consumers |
+| TCP Socket | TCP | Reliable point-to-point data feeds with delivery guarantees |
+| WebSocket | WS / WSS | Browser-based applications and real-time web interfaces |
+| REST API | HTTP | Request-driven data access and ad hoc queries |
+| Kafka Streaming | Kafka | Event-driven microservices and high-throughput streaming pipelines |
+
+## Deployment Options
+
+<Tabs>
+  <Tab title="Cloud-Based">
+    AlgoSeek hosts and operates the ticker plant on AWS infrastructure on your behalf. There is no hardware to provision or maintain on your end. All exchange specification upgrades, software patches, and capacity scaling are handled by AlgoSeek as part of the service.
+
+    **Highlights:**
+    - No co-location hardware required
+    - Upgrades and exchange spec changes applied automatically
+    - Pay-as-you-grow capacity model
+    - SLA-backed uptime with AlgoSeek-managed redundancy
+  </Tab>
+  <Tab title="On-Premises">
+    AlgoSeek deploys the ticker plant software directly onto your own hardware at your facility or co-location environment. AlgoSeek provides the software, initial installation, and ongoing support for the life of the engagement.
+
+    **Highlights:**
+    - Full control over hardware and network topology
+    - Integrates with your existing co-location or data center setup
+    - AlgoSeek provides software updates and tier-1 technical support
+    - Suitable for organizations with strict data residency or latency requirements
+  </Tab>
+</Tabs>
+
+## Why Use Ticker Plant as a Service?
+
+Building and maintaining your own ticker plant requires connecting to dozens of individual exchange feeds, keeping pace with continuous exchange specification changes, and managing co-location hardware with the operational discipline those environments demand. AlgoSeek's service handles all of this — with a proven deployment record and zero unplanned downtime since inception. You get production-grade exchange connectivity on day one, without the multi-year build investment.
+
+<Info>
+  Contact [sales@algoseek.com](mailto:sales@algoseek.com) to discuss ticker plant capacity requirements and deployment timeline.
+</Info>

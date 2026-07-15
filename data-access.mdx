@@ -1,0 +1,46 @@
+---
+title: "How AlgoSeek Data Access and Subscriptions Work"
+sidebarTitle: "Data Access"
+description: "Understand AlgoSeek subscription tiers, the Console portal, authentication, and how to manage your data delivery settings and entitlements."
+---
+
+AlgoSeek manages data access through the Console portal at [console.algoseek.com](https://console.algoseek.com). Once subscribed, you receive credentials to log in, configure delivery destinations, and monitor your active data feeds — all from a single interface without needing to contact support for routine changes.
+
+## The AlgoSeek Console
+
+The Console is your central hub for managing every aspect of your AlgoSeek account. After logging in, you can:
+
+- **View active subscriptions** — See every dataset you're entitled to, including coverage dates, update frequency, and delivery format options.
+- **Configure delivery settings** — Set up and update your SFTP credentials, cloud bucket paths (AWS S3, GCS, Azure Blob), and ArdaDB connection strings directly from the **Delivery Settings** panel.
+- **Download sample data** — Access representative sample files for any dataset in your catalog before committing to full delivery, so you can validate schemas and field definitions in your pipeline.
+- **Contact support** — Open a support ticket, view ticket history, and find direct contact details for the AlgoSeek technical team — all without leaving the portal.
+
+## Subscriptions and Entitlements
+
+Each AlgoSeek subscription grants access to one or more specific datasets. Entitlements are enforced at the dataset level, meaning your credentials only expose the data you're actively subscribed to. Subscriptions are scoped per dataset and can be added, adjusted, or cancelled at any time — there are no long lock-in periods by default.
+
+To add datasets to your account, reach out to the sales team at [sales@algoseek.com](mailto:sales@algoseek.com). They can provide pricing, coverage details, and coordinate access provisioning, typically within one business day.
+
+<Note>
+  To request a trial or demo of any dataset, email [sales@algoseek.com](mailto:sales@algoseek.com) or call **+1 646 583 1832**. Trial access includes sample files and, in some cases, limited ArdaDB query access so you can evaluate data quality before subscribing.
+</Note>
+
+## Connecting to Your Data
+
+Once your subscription is active, AlgoSeek supports four methods for accessing your data. Choose the one that matches your latency requirements and infrastructure:
+
+- **ArdaDB SQL** — Query datasets interactively using standard SQL over a high-performance columnar engine. Ideal for research, backtesting, and ad-hoc analysis. See the [ArdaDB Guide](/delivery/ardadb) for connection details and query examples.
+- **File Delivery** — Receive scheduled file drops in CSV, Parquet, HDF5, FIX, or Feather format via SFTP or cloud bucket. Best for bulk ingestion into proprietary data pipelines. See [File Delivery](/delivery/file-delivery) for setup instructions.
+- **REST API** — Pull data programmatically over HTTPS with JSON responses. Suited for application integration and near-real-time data access. See the [REST API Reference](/delivery/api-access) for endpoint documentation.
+- **Co-Location Feed** — Receive ultra-low-latency binary data feeds over TCP or Multicast, with tick-to-trade latency under 15 µs. Designed for HFT and market-making infrastructure. See [Co-Location Feed](/delivery/colocation) for network specifications.
+
+## Support
+
+The AlgoSeek technical support team is available to help with connection issues, data quality questions, delivery configuration, and schema clarifications.
+
+- **Email:** [support@algoseek.com](mailto:support@algoseek.com)
+- **Phone:** +1 646 583 1832
+
+<Tip>
+  When filing a support request, include your **subscription ID** (found in the Console under **Account → Subscriptions**) and the **dataset name** you're asking about. This allows the support team to pull your entitlement details immediately and resolve your issue faster.
+</Tip>

@@ -1,0 +1,65 @@
+---
+title: "Ultra-Low-Latency Market Data via Co-Location"
+sidebarTitle: "Co-Location"
+description: "AlgoSeek co-location feeds deliver US market data in under 15 microseconds from Equinix NY2 and NY4 via TCP socket, multicast, or hosted solutions."
+---
+
+AlgoSeek operates a third-generation ticker plant co-located at Equinix NY2 and NY4, directly connected to all major US exchanges via 10Gb fiber. Co-location access gives you sub-15-microsecond market data suitable for high-frequency trading, market making, and latency-sensitive strategies — with a zero-downtime track record since inception.
+
+## Access Methods
+
+AlgoSeek supports three connectivity models. Choose based on your latency requirements, infrastructure footprint, and operational preferences.
+
+<CardGroup cols={3}>
+  <Card title="Multicast" icon="tower-broadcast">
+    Broadcast data streams ideal for consuming multiple instruments simultaneously. One feed serves your entire subscriber universe with no per-symbol connection overhead.
+  </Card>
+  <Card title="TCP Socket" icon="plug">
+    Point-to-point connection with reliable, ordered delivery for individual feeds. Best when you need guaranteed sequencing and per-symbol subscription control.
+  </Card>
+  <Card title="Hosted Solution" icon="server">
+    AlgoSeek manages servers in the data center so you connect remotely. Eliminates the need for your own co-location hardware while preserving ultra-low-latency access.
+  </Card>
+</CardGroup>
+
+## What the Feed Provides
+
+The co-location feed gives you comprehensive, exchange-native market data across the full US equity market structure:
+
+- Full top-of-book and depth-of-book quotes from all US exchanges
+- Trade prints with exchange flags, condition codes, and aggressor identification
+- NBBO calculation and LULD price bands
+- Real-time short sale restriction (SSR) and regulatory halt flags
+- Feed replay capability for testing and missed-data recovery
+- Dynamic ticker subscription management (add/remove symbols at runtime)
+
+## Feed Specifications
+
+| Property | Value |
+|---|---|
+| Latency | < 15 microseconds |
+| Connection | 10Gb fiber (Equinix NY2 / NY4) |
+| Protocol | TCP Socket, Multicast |
+| Uptime SLA | Zero downtime since inception |
+| Coverage | All 15+ US exchange venues |
+
+## Getting Connected
+
+<Steps>
+  <Step title="Contact AlgoSeek Sales">
+    Reach out to [sales@algoseek.com](mailto:sales@algoseek.com) to discuss co-location requirements, available capacity, and which access method fits your architecture.
+  </Step>
+  <Step title="Sign the Co-Location Agreement">
+    Once terms are confirmed, sign the co-location agreement. AlgoSeek will provision your connection and provide endpoint details, credentials, and network configuration instructions.
+  </Step>
+  <Step title="Connect Your Systems">
+    Point your systems at the provisioned feed endpoint. AlgoSeek provides sample client code for both TCP and multicast protocols along with hands-on integration support during onboarding.
+  </Step>
+  <Step title="Validate with Feed Replay">
+    Use the feed replay function to test your implementation against historical data before going live. Replay lets you verify message handling, ordering logic, and reconnection behavior in a controlled environment.
+  </Step>
+</Steps>
+
+<Warning>
+  Co-location access requires a signed agreement and dedicated hardware provisioning. Lead time is typically 5–10 business days. Contact sales early to avoid delays in your go-live timeline.
+</Warning>

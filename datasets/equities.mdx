@@ -1,0 +1,63 @@
+---
+title: "US Equity Market Data: Ticks, Bars & Reference"
+sidebarTitle: "Equities"
+description: "AlgoSeek US equity datasets cover tick data, TAQ minute bars, daily OHLC, and reference files for all listed US stocks, ETFs, ETNs, and ADRs."
+---
+
+AlgoSeek's US equity data is sourced from the SIP consolidated feed via co-located servers at Equinix NY2 and NY4. Coverage spans all 15+ US exchanges from 2007 to present, with nanosecond timestamps and full NBBO context — giving you the complete picture of price discovery across every listed US stock, ETF, ETN, and ADR.
+
+## Intraday Bar Datasets
+
+AlgoSeek's intraday bar datasets aggregate raw SIP feed data into structured time bars. Each dataset is purpose-built for a different balance of analytical depth and file size.
+
+| Dataset | Resolution | Key Fields | Formats |
+|---|---|---|---|
+| Trade and Quote Minute Bar | 1 min | OHLC, VWAP, spread, order-flow (~60 fields) | CSV, SQL |
+| Trade and Quote Extended Minute Bar | 1 min | 90+ fields including microstructure metrics | CSV, SQL |
+| Trade Only Minute Bar | 1 min | OHLCV, VWAP, trade count | CSV, SQL |
+| Trade and Quote Second Bar | 1 sec | 90+ microstructure fields | CSV |
+| Industry Standard Trade Only Minute Bar | 1 min | OHLCV, industry-standard methodology | CSV, SQL |
+| Buy/Sell Pressure & Retail Indicators | 1 min | Buy/sell pressure, retail flow indicators | CSV |
+
+## Daily Datasets
+
+Daily datasets provide session-level summaries derived from the SIP feed. Use these for end-of-day analytics, backtesting, and factor research.
+
+| Dataset | Notes | Formats |
+|---|---|---|
+| Daily OHLC | SIP-derived, VWAP, segment volumes | SQL |
+| Daily OHLC Adjusted | Pre/post corporate-action adjusted | CSV, SQL |
+| Primary Exchange Daily OHLC | Primary exchange only, session-accurate | CSV, SQL |
+| Trade and Quote Daily Bar | OHLCV + spread metrics + exchange-level volume | CSV, SQL |
+| Industry Standard Daily OHLC Adjusted | Industry-standard methodology + adjusted | CSV, SQL |
+
+## Tick Datasets
+
+Tick datasets deliver the full granularity of the SIP consolidated feed. Every trade and quote event is timestamped to the nanosecond, with exchange attribution and condition codes preserved.
+
+| Dataset | Notes | Formats |
+|---|---|---|
+| Trade and Quote (TAQ) | SIP feed, nanosecond timestamps, full NBBO | CSV, SQL |
+| Trade Only | SIP Last Sale, pre/post-market, on/off exchange | CSV, SQL |
+| OTC Quote | OTC market quotes | CSV, SQL |
+
+## Reference Datasets
+
+AlgoSeek equity reference data gives you the context to link market events to securities and maintain consistent identifiers over time. The suite includes the **Security Master File**, **ASID Lookup**, **Lookup File**, **Adjustment Factors** (basic, detailed, and cumulative), **IPO data**, **Index Components**, **Trading Halts**, **Market Holidays**, **SSR Circuit Breakers**, **Shares Outstanding**, and **Announcements**.
+
+Reference datasets are designed to pair directly with the market data series above, ensuring your identifiers remain consistent even across ticker changes, corporate actions, and delistings. See the [Reference Data](/datasets/reference-data) page for full schema details and format specifications.
+
+<Note>
+  All equity datasets are available in both standard and No-FINRA/TRF versions.
+  The No-FINRA/TRF version excludes off-exchange dark pool prints for cleaner
+  backtesting.
+</Note>
+
+<CardGroup cols={2}>
+  <Card title="TAQ Minute Bar Reference" icon="table" href="/reference/eq-taq-minute-bar">
+    Full field-level schema for the Trade and Quote Minute Bar dataset, including all ~60 analytical columns and their definitions.
+  </Card>
+  <Card title="Tick Data Reference" icon="bolt" href="/reference/eq-tick-data">
+    Complete field definitions for the equity TAQ and Trade Only tick datasets, with condition code mappings and timestamp format details.
+  </Card>
+</CardGroup>

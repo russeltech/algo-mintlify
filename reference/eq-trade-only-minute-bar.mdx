@@ -1,0 +1,52 @@
+---
+title: "US Equities Trade Only Minute Bar Field Reference"
+sidebarTitle: "Trade Only Bar"
+description: "Field reference for AlgoSeek US Equity Trade Only Minute Bar datasets — OHLCV, VWAP, and trade count at 1-minute resolution from SIP trade prints."
+---
+
+The US Equities Trade Only Minute Bar dataset provides OHLCV bars derived solely from SIP trade prints, without quote data. With 15 fields per bar, it is the most compact and easy-to-use equity bar product — ideal for strategies that need price and volume history without the overhead of NBBO analytics.
+
+## Dataset Variants
+
+AlgoSeek offers five Trade Only Minute Bar variants to fit different research and production workflows:
+
+| Variant | Source | Notes |
+|---|---|---|
+| Trade Only Minute Bar | All SIP trades | Includes on-exchange and TRF/off-exchange |
+| Trade Only Minute Bar Excl. FINRA/TRF | Exchange trades only | Excludes dark pool/TRF prints |
+| Industry Standard Trade Only Minute Bar | SIP trades, industry methodology | Matches industry conventions (e.g. for benchmarking) |
+| Trade Only Adjusted Minute Bar | All SIP trades | Both raw and corporate-action-adjusted columns |
+| Industry Standard Adjusted Minute Bar | SIP trades, adjusted | Adjusted + industry methodology |
+
+## Fields
+
+| Field | Type | Description |
+|---|---|---|
+| BarTime | datetime | Bar opening timestamp (ET, minute boundary) |
+| OpenPrice | float | First trade price in bar |
+| HighPrice | float | Highest trade price in bar |
+| LowPrice | float | Lowest trade price in bar |
+| ClosePrice | float | Last trade price in bar |
+| Volume | int | Total shares traded in bar |
+| TotalTrades | int | Number of trade prints in bar |
+| VWAP | float | Volume-weighted average price |
+| OpenPriceAdj | float | (Adjusted variants only) Adjusted open price |
+| ClosePriceAdj | float | (Adjusted variants only) Adjusted close price |
+| VolumeAdj | int | (Adjusted variants only) Adjusted volume |
+
+## Odd Lot Handling
+
+Odd-lot trades — executions of fewer than 100 shares — are **included** in the standard Trade Only Minute Bar and **excluded** from the FINRA/TRF-excluded variant.
+
+This distinction matters for strategy development: odd-lot trades are not subject to Reg NMS best-execution rules, which means they can print outside the prevailing NBBO and produce artificially extreme high or low prices within a bar. If your strategy is sensitive to intraday price ranges or uses bar extremes as signal inputs, use the exchange-only (Excl. FINRA/TRF) variant for cleaner and more representative bar construction.
+
+## Sample Data
+
+The following rows illustrate the CSV structure for the base Trade Only Minute Bar variant. Adjusted variants append additional columns to the right.
+
+```csv
+BarTime,OpenPrice,HighPrice,LowPrice,ClosePrice,Volume,TotalTrades,VWAP
+2024-01-02 09:30:00,185.42,185.88,184.97,185.64,1248500,4231,185.51
+2024-01-02 09:31:00,185.64,186.12,185.55,186.05,843200,2871,185.89
+2024-01-02 09:32:00,186.05,186.33,185.92,186.18,712900,2344,186.14
+```

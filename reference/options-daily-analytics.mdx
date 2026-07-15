@@ -1,0 +1,50 @@
+---
+title: "US Options Daily Analytics: Greeks and Implied Vol"
+sidebarTitle: "Daily Analytics"
+description: "Field reference for AlgoSeek US Options Daily Analytics — end-of-day theoretical price, implied volatility, and Greeks for all listed US options contracts."
+---
+
+The US Options Daily Analytics dataset provides end-of-day theoretical option prices, implied volatility (IV), and full Greeks for all listed US options contracts. Values are computed from last-minute mid-prices using the Black-Scholes-Merton model, making this dataset ideal for daily options research, risk monitoring, and strategy backtesting without tick-level data.
+
+## Dataset Summary
+
+| Property | Value |
+|---|---|
+| Frequency | Daily (end-of-day) |
+| Pricing Model | Black-Scholes-Merton |
+| Price Input | Last-minute mid-price |
+| Formats | CSV, SQL |
+| Coverage | All listed US options contracts |
+
+## Fields
+
+| Field | Type | Description |
+|---|---|---|
+| TradeDate | date | Settlement date |
+| ContractId | string | AlgoSeek options contract identifier |
+| Underlying | string | Underlying ticker |
+| Expiration | date | Contract expiration date |
+| Strike | float | Strike price |
+| OptionType | string | `C` (call) or `P` (put) |
+| TheoreticalPrice | float | BSM-derived theoretical option price |
+| ImpliedVolatility | float | Implied volatility (annualized, decimal) |
+| Delta | float | Rate of change of option price vs. underlying |
+| Gamma | float | Rate of change of Delta vs. underlying |
+| Theta | float | Time decay (price change per day) |
+| Vega | float | Price sensitivity to 1% IV change |
+| Rho | float | Price sensitivity to 1% interest rate change |
+| UnderlyingPrice | float | Underlying mid-price used for computation |
+| RiskFreeRate | float | Risk-free rate used in BSM model |
+| TimeToExpiration | float | Days to expiration (calendar) |
+
+## Usage Notes
+
+Keep the following considerations in mind when working with this dataset:
+
+- **Implied volatility** is annualized and expressed as a decimal — for example, a value of `0.25` represents 25% IV.
+- **Greeks are not adjusted for the contract multiplier** (typically 100 shares per contract). Multiply each Greek by 100 to obtain the dollar-equivalent sensitivity for a single contract position.
+- **BSM assumes European-style exercise.** Because most US equity options are American-style, you may observe slight theoretical divergences — particularly for deep in-the-money puts or options on high-dividend underlyings near ex-dividend dates.
+
+<Note>
+  The Daily Analytics dataset pairs well with Open Interest data for constructing daily options market snapshots and put/call ratio analysis.
+</Note>

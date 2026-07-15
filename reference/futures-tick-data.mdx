@@ -1,0 +1,47 @@
+---
+title: "US Futures Tick Data and Order Depth Reference"
+sidebarTitle: "Futures Ticks"
+description: "Field reference for AlgoSeek US Futures tick datasets — millisecond-precision trades, quotes, and multi-level order book depth with aggressor flags."
+---
+
+AlgoSeek US Futures tick datasets capture individual trade prints and quote updates for all major US futures contracts, with millisecond-precision timestamps, aggressor flags, and exchange condition codes. The Multiple Depth dataset extends this with multi-level order book snapshots, enabling order flow and liquidity analysis at the tick level.
+
+## Tick Dataset Variants
+
+| Dataset | Contents | Formats |
+|---|---|---|
+| Trade and Quote | Trade prints + top-of-book quotes | CSV, SQL |
+| Trade Only | Trade prints only | CSV, SQL |
+| Multiple Depth | Multi-level order book snapshots | CSV, SQL |
+
+## Trade Record Fields
+
+Each trade record represents a single executed print reported by the exchange feed. The `IsAggressorBuy` flag identifies the liquidity-taking side, making these records directly usable for order flow imbalance and trade impact models.
+
+| Field | Type | Description |
+|---|---|---|
+| DateTime | datetime | Millisecond-precision timestamp (ET) |
+| Symbol | string | Futures contract symbol |
+| Price | float | Trade execution price |
+| Size | int | Contracts traded |
+| Exchange | string | Execution exchange |
+| IsAggressorBuy | bool | True if buyer was aggressor |
+| ConditionCode | string | Exchange trade condition code |
+
+## Quote and Depth Fields
+
+Top-of-book quote fields are present in the Trade and Quote dataset. The Multiple Depth dataset extends the schema with price and size fields for order book levels 2 through 10 on both the bid and ask sides.
+
+| Field | Type | Description |
+|---|---|---|
+| DateTime | datetime | Millisecond-precision timestamp (ET) |
+| BidPrice1 | float | Best bid price (level 1) |
+| BidSize1 | int | Best bid size (level 1) |
+| AskPrice1 | float | Best ask price (level 1) |
+| AskSize1 | int | Best ask size (level 1) |
+| BidPrice2–10 | float | Bid price levels 2–10 *(Multiple Depth only)* |
+| AskPrice2–10 | float | Ask price levels 2–10 *(Multiple Depth only)* |
+
+<Tip>
+  For futures options tick data, the same field schema applies. Contact support to confirm specific field availability for your futures options subscription.
+</Tip>

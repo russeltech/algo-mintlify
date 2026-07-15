@@ -1,0 +1,55 @@
+---
+title: "Understanding AlgoSeek Security Identifiers"
+sidebarTitle: "Identifiers"
+description: "AlgoSeek uses SecId, ASID, FIGI, and ISIN to identify securities. Learn how each identifier works and how to cross-reference across datasets and time."
+---
+
+AlgoSeek uses multiple identifier schemes to let you reliably track securities across datasets, corporate events, and time. Understanding these identifiers is essential for building correct backtests and cross-dataset joins. Using the wrong identifier — or naively relying on tickers alone — is one of the most common sources of subtle data errors in quantitative research.
+
+## Identifier Overview
+
+Each identifier in the AlgoSeek ecosystem serves a distinct purpose and carries different stability guarantees:
+
+| Identifier | Description | Stability | Use Case |
+|---|---|---|---|
+| Ticker | Exchange-assigned symbol (e.g., `AAPL`) | Changes on rename or reorganization | Real-time lookups, display |
+| algoseek SecId | AlgoSeek's internal security ID | Stable within a listing period | Primary join key within a dataset |
+| ASID | AlgoSeek persistent security ID | Stable across ticker changes and reorgs since 2007 | Long-horizon backtesting, continuous price history |
+| FIGI | Financial Instrument Global Identifier (OpenFIGI) | Globally unique, stable | Cross-vendor data integration |
+| ISIN | International Securities Identification Number | Globally unique | Regulatory reporting, cross-market linking |
+
+<Note>
+  Tickers can be reused by different companies over time (e.g., a ticker is
+  retired then reassigned). Always use ASID or SecId for unambiguous long-horizon
+  history.
+</Note>
+
+## When to Use Each Identifier
+
+Selecting the right identifier for your task prevents hard-to-diagnose join errors and data gaps:
+
+- Use **Ticker** for quick lookups and human-readable references where temporal precision is not critical — dashboards, ad-hoc queries, or single-day snapshots.
+
+- Use **SecId** as the primary join key when working within a single AlgoSeek dataset on a known, fixed date range. SecId is stable within a listing period and is present on every AlgoSeek price file.
+
+- Use **ASID** when building continuous price series that span ticker changes, mergers, exchange transfers, or share class restructurings. The ASID Lookup file maps every ticker and SecId to its corresponding ASID, giving you a single durable handle for each economic entity going back to 2007.
+
+- Use **FIGI** or **ISIN** when integrating AlgoSeek data with third-party data vendors, index providers, or regulatory systems that rely on globally standardized identifiers.
+
+## ASID Lookup Example
+
+The ASID Lookup file is a daily CSV that contains four columns: `Date`, `Ticker`, `SecId`, and `ASID`. You can join it to any AlgoSeek price file on `Date` + `Ticker` or `Date` + `SecId` to attach the persistent ASID to each row.
+
+```csv
+Date,Ticker,SecId,ASID
+2024-01-02,GOOGL,123456,AS00001234
+2024-01-02,GOOG,123457,AS00001234
+```
+
+In this example, both Alphabet share classes (`GOOGL` and `GOOG`) carry different SecIds but share the same ASID (`AS00001234`). This lets you treat them as a single economic entity for portfolio-level analysis, even though they trade as separate instruments and have different price histories.
+
+## Security Master Lookups
+
+The Security Master file maps each SecId to a full set of descriptive attributes: ticker, company name, sector, industry, exchange, currency, FIGI, ISIN, and more. It is the authoritative reference for instrument metadata within AlgoSeek datasets.
+
+You should load a fresh copy of the Security Master daily. Securities are added when new instruments list (IPOs, ETF launches, options series openings) and existing records can be updated when issuers change names, migrate exchanges, or undergo corporate restructurings. Using a stale Security Master risks missing newly listed instruments or carrying outdated metadata into your pipeline.

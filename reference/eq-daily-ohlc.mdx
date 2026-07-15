@@ -1,0 +1,56 @@
+---
+title: "US Equities Daily OHLC Dataset Field Reference"
+sidebarTitle: "Daily OHLC"
+description: "Field reference for AlgoSeek US Equities Daily OHLC datasets — OHLCV, VWAP, and segment volumes available in raw and corporate-action-adjusted forms."
+---
+
+The US Equities Daily OHLC dataset provides a single end-of-day OHLCV summary per security per trading day, derived from SIP trade data. Multiple variants are available — raw, adjusted, primary-exchange-only, and industry-standard — to match your research or production data requirements.
+
+## Dataset Variants
+
+AlgoSeek publishes six Daily OHLC variants. Choose the one that best fits your methodology: raw SIP-derived data for full market coverage, primary-exchange-only for cleaner price series, or adjusted variants when you need corporate-action-corrected prices pre-computed alongside the originals.
+
+| Variant | Notes | Formats |
+|---|---|---|
+| Daily OHLC | OHLCV + VWAP + segment volumes, SIP-derived | SQL |
+| Daily OHLC Adjusted | Raw + pre/post corporate-action-adjusted prices and volume | CSV, SQL |
+| Primary Exchange Daily OHLC | OHLCV from primary listing exchange only | CSV, SQL |
+| Industry Standard Daily OHLC | Calculated via industry-standard methodology | SQL |
+| Industry Standard Daily OHLC Adjusted | Industry-standard + adjusted | CSV, SQL |
+| Trade and Quote Daily Bar | Full TAQ-derived daily summary with spread and exchange-level volume | CSV, SQL |
+
+## Fields
+
+The table below covers all fields across Daily OHLC variants. Fields marked *(Adjusted variants)* appear only in the Daily OHLC Adjusted and Industry Standard Daily OHLC Adjusted datasets.
+
+| Field | Type | Description |
+|---|---|---|
+| TradeDate | date | Trading date |
+| Ticker | string | Equity ticker symbol |
+| OpenPrice | float | First trade price of the day |
+| HighPrice | float | Highest trade price of the day |
+| LowPrice | float | Lowest trade price of the day |
+| ClosePrice | float | Last trade price of the day |
+| Volume | int | Total shares traded (all sessions) |
+| MarketVolume | int | Shares traded during regular market hours |
+| FINRAVolume | int | Shares traded through FINRA/TRF |
+| VWAP | float | Volume-weighted average price (full day) |
+| MarketHoursVWAP | float | VWAP for regular market hours only |
+| OpenPriceAdj | float | *(Adjusted variants)* Adjusted open price |
+| ClosePriceAdj | float | *(Adjusted variants)* Adjusted close price |
+| VolumeAdj | int | *(Adjusted variants)* Adjusted total volume |
+
+## Sample Data
+
+The following rows illustrate a typical Daily OHLC file for three large-cap equities on a single trading day.
+
+```csv
+TradeDate,Ticker,OpenPrice,HighPrice,LowPrice,ClosePrice,Volume,VWAP
+2024-01-02,AAPL,185.42,186.33,184.97,186.18,48320000,185.72
+2024-01-02,MSFT,374.08,376.15,373.45,375.92,21450000,375.11
+2024-01-02,NVDA,495.22,498.45,493.88,497.65,38710000,496.34
+```
+
+<Tip>
+  For long-horizon backtests, subscribe to the Adjusted variant to get pre-computed corporate-action-adjusted prices alongside raw prices in a single file.
+</Tip>

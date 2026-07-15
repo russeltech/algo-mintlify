@@ -1,0 +1,60 @@
+---
+title: "AlgoSeek Data Pipeline as a Service"
+sidebarTitle: "Data Pipeline"
+description: "AlgoSeek's modular data pipeline service lets you build, monitor, and run financial data pipelines with prebuilt connectors, normalizers, and schedulers on AWS."
+---
+
+AlgoSeek's Data Pipeline as a Service gives you modular pipeline components for financial data processing — without building from scratch. Combine prebuilt modules for ingestion, normalization, quality control, and delivery to create a production-ready data pipeline in days, not months. Each module is purpose-built for the demands of institutional financial data and can be assembled into any topology your workflow requires.
+
+## Pipeline Modules
+
+Each module in the AlgoSeek pipeline stack performs a discrete, well-defined function. You can use any combination of modules depending on your data sources, transformation requirements, and delivery targets.
+
+<CardGroup cols={2}>
+  <Card title="Source / Destination Connector" icon="plug">
+    Connects to upstream data sources and downstream delivery targets. Includes built-in data governance controls and security compliance enforcement at the transport layer.
+  </Card>
+  <Card title="Profiler & Quality Manager" icon="chart-bar">
+    Detects schema structure automatically, generates quality reports per ingestion run, and raises alerts when data drift or schema breaks are detected.
+  </Card>
+  <Card title="Normalizer" icon="sliders">
+    Standardizes column names, sorts values into canonical order, formats date and timestamp fields consistently, and removes outliers and duplicate records.
+  </Card>
+  <Card title="Cross-Referencer" icon="arrows-cross">
+    Cross-references records against algoseek SecId, FIGI, and ISIN master files, ensuring consistent instrument identification across all sources.
+  </Card>
+  <Card title="Transformer & Blender" icon="code-merge">
+    Validates records against configurable business rules, enriches them with computed fields, and combines data from multiple upstream sources into a single output stream.
+  </Card>
+  <Card title="Entity Mapper" icon="diagram-project">
+    Matches entities across datasets using predefined mapping rules or AI/ML-based fuzzy matching algorithms for cases where identifiers differ between sources.
+  </Card>
+  <Card title="Scheduler" icon="clock">
+    Schedules pipeline runs on a real-time, daily, or fully custom cron basis. Handles configurable retry logic and sends failure alerts via email or webhook.
+  </Card>
+  <Card title="Pipeline Manager" icon="tower-control">
+    Provides a unified view of all module interconnections, collects structured logs across every pipeline stage, and dispatches failure alerts with contextual diagnostics.
+  </Card>
+</CardGroup>
+
+## Supported Environments
+
+Pipeline modules run on AWS infrastructure but are designed to integrate with any existing data environment. Output destinations include:
+
+- **Cloud object storage** — AWS S3, Azure Blob Storage, Google Cloud Storage
+- **Data warehouses & lakehouses** — Snowflake, Databricks, Amazon Redshift
+- **Databases** — PostgreSQL, MySQL, and other relational databases via JDBC
+- **Streaming platforms** — Apache Kafka
+- **File transfer** — SFTP
+- **APIs** — REST endpoints for push-based delivery
+
+## Use Cases
+
+- Automating daily delivery and ingestion of AlgoSeek datasets into your data warehouse or lakehouse
+- Blending AlgoSeek equity or options data with alternative data feeds (news, ESG, satellite imagery)
+- Building a real-time feature store for ML models using live AlgoSeek tick-level feeds
+- Normalizing and cross-referencing data from multiple market data vendors into a single unified schema
+
+<Note>
+  The Data Pipeline service is available as a managed service (AlgoSeek operates it) or a self-service module set. Contact [sales@algoseek.com](mailto:sales@algoseek.com) to discuss which model fits your workflow.
+</Note>
