@@ -1,5 +1,5 @@
 ---
-title: "US Futures Tick Data and Order Depth Reference"
+title: "US Futures Tick Data: Trade, Quote, and Depth Reference"
 sidebarTitle: "Futures Ticks"
 description: "Field reference for AlgoSeek US Futures tick datasets — millisecond-precision trades, quotes, and multi-level order book depth with aggressor flags."
 ---
@@ -40,7 +40,9 @@ Top-of-book quote fields are present in the Trade and Quote dataset. The Multipl
 | AskPrice1 | float | Best ask price (level 1) |
 | AskSize1 | int | Best ask size (level 1) |
 | BidPrice2–10 | float | Bid price levels 2–10 *(Multiple Depth only)* |
+| BidSize2–10 | int | Bid size levels 2–10 *(Multiple Depth only)* |
 | AskPrice2–10 | float | Ask price levels 2–10 *(Multiple Depth only)* |
+| AskSize2–10 | int | Ask size levels 2–10 *(Multiple Depth only)* |
 
 <Tip>
   For futures options tick data, the same field schema applies. Contact support to confirm specific field availability for your futures options subscription.

@@ -1,7 +1,7 @@
 ---
-title: "Timestamps, Time Zones, and Trading Sessions"
+title: "AlgoSeek Timestamps, Time Zones, and Trading Sessions"
 sidebarTitle: "Timestamps"
-description: "AlgoSeek timestamps are in Eastern Time (ET) with nanosecond precision for ticks and minute-boundary alignment for bars. Learn the session schedule and bar time conventions."
+description: "AlgoSeek timestamps use Eastern Time (ET): nanosecond for equity ticks, minute-boundary for bars. Learn session schedules and bar time conventions."
 ---
 
 All AlgoSeek market data timestamps are in Eastern Time (ET) — UTC−5 during Eastern Standard Time and UTC−4 during Eastern Daylight Time. Understanding timestamp conventions helps you correctly align data across datasets and avoid off-by-one errors at session boundaries, particularly when merging tick and bar data or comparing AlgoSeek data with UTC-based sources.

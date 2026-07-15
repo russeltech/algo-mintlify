@@ -1,5 +1,5 @@
 ---
-title: "AlgoSeek Frequently Asked Questions"
+title: "AlgoSeek Frequently Asked Questions: Data & Delivery"
 sidebarTitle: "FAQ"
 description: "Answers to common questions about AlgoSeek data quality, delivery, subscriptions, ArdaDB, corporate actions, and real-time feed access."
 ---
@@ -12,7 +12,7 @@ This page answers the most common questions from AlgoSeek subscribers. If you do
   </Accordion>
 
   <Accordion title="What time zone are timestamps in?">
-    All timestamps are in **Eastern Time (ET)**. See the Timestamps guide for details on precision levels (millisecond, microsecond, nanosecond) and bar open/close conventions.
+    All timestamps are in **Eastern Time (ET)**. See the [Timestamps guide](/concepts/timestamps) for details on precision levels (millisecond, microsecond, nanosecond) and bar open/close conventions.
   </Accordion>
 
   <Accordion title="How quickly is daily data available after market close?">
@@ -39,11 +39,11 @@ This page answers the most common questions from AlgoSeek subscribers. If you do
     - **Databases:** PostgreSQL, BigQuery, Redshift, Snowflake, MongoDB
     - **File formats:** CSV, TSV, JSON, Parquet
 
-    Your imported data is stored in dedicated EBS or S3 storage provisioned for your account, kept separate from the shared AlgoSeek data catalog while remaining queryable through the same ArdaDB interface.
+    Your imported data is stored in dedicated cloud storage provisioned for your account, kept separate from the shared AlgoSeek data catalog while remaining queryable through the same ArdaDB interface.
   </Accordion>
 
   <Accordion title="How do I handle corporate actions in backtests?">
-    Use the **Detailed Adjustment Factors** or **Basic Adjustment Factors** datasets to construct adjusted price series from raw unadjusted data. Alternatively, subscribe to one of the pre-adjusted dataset variants if you prefer to receive split- and dividend-adjusted prices directly. See the Corporate Actions guide for worked examples of both approaches.
+    Use the **Detailed Adjustment Factors** or **Basic Adjustment Factors** datasets to construct adjusted price series from raw unadjusted data. Alternatively, subscribe to one of the pre-adjusted dataset variants if you prefer to receive split- and dividend-adjusted prices directly. See the [Corporate Actions guide](/concepts/corporate-actions) for worked examples of both approaches.
   </Accordion>
 
   <Accordion title="What formats are available for file delivery?">

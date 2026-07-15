@@ -1,5 +1,5 @@
 ---
-title: "Understanding AlgoSeek Security Identifiers"
+title: "AlgoSeek Security Identifiers: Ticker, SecId, and ASID"
 sidebarTitle: "Identifiers"
 description: "AlgoSeek uses SecId, ASID, FIGI, and ISIN to identify securities. Learn how each identifier works and how to cross-reference across datasets and time."
 ---
@@ -13,7 +13,7 @@ Each identifier in the AlgoSeek ecosystem serves a distinct purpose and carries 
 | Identifier | Description | Stability | Use Case |
 |---|---|---|---|
 | Ticker | Exchange-assigned symbol (e.g., `AAPL`) | Changes on rename or reorganization | Real-time lookups, display |
-| algoseek SecId | AlgoSeek's internal security ID | Stable within a listing period | Primary join key within a dataset |
+| AlgoSeek SecId | AlgoSeek's per-listing security ID | Stable within a listing period | Primary join key within a dataset |
 | ASID | AlgoSeek persistent security ID | Stable across ticker changes and reorgs since 2007 | Long-horizon backtesting, continuous price history |
 | FIGI | Financial Instrument Global Identifier (OpenFIGI) | Globally unique, stable | Cross-vendor data integration |
 | ISIN | International Securities Identification Number | Globally unique | Regulatory reporting, cross-market linking |
