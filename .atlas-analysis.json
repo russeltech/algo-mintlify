@@ -1,0 +1,126 @@
+{
+  "projectType": "data-platform",
+  "projectName": "AlgoSeek",
+  "projectDescription": "AlgoSeek is an institutional-grade financial market data platform providing ultra-low-latency tick, bar, and reference data for US equities, options, futures, and future options — delivered via cloud, API, co-location, and the ArdaDB columnar database.",
+  "theme": "luma",
+  "primaryColor": "#ef7025",
+  "lightColor": "#eec9bc",
+  "darkColor": "#4fa1ab",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "data-access"
+            ]
+          },
+          {
+            "group": "Data Catalog",
+            "pages": [
+              "datasets/equities",
+              "datasets/options",
+              "datasets/futures",
+              "datasets/reference-data"
+            ]
+          },
+          {
+            "group": "Delivery & Access",
+            "pages": [
+              "delivery/file-delivery",
+              "delivery/api-access",
+              "delivery/colocation",
+              "delivery/ardadb"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/data-types",
+              "concepts/identifiers",
+              "concepts/corporate-actions",
+              "concepts/timestamps"
+            ]
+          },
+          {
+            "group": "Services",
+            "pages": [
+              "services/data-engineering",
+              "services/data-pipeline",
+              "services/ticker-plant"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "support/faq",
+              "support/contact"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Dataset Reference",
+        "groups": [
+          {
+            "group": "Equities",
+            "pages": [
+              "reference/eq-taq-minute-bar",
+              "reference/eq-trade-only-minute-bar",
+              "reference/eq-daily-ohlc",
+              "reference/eq-tick-data"
+            ]
+          },
+          {
+            "group": "Options",
+            "pages": [
+              "reference/options-taq-minute-bar",
+              "reference/options-daily-analytics",
+              "reference/options-tick-data"
+            ]
+          },
+          {
+            "group": "Futures",
+            "pages": [
+              "reference/futures-taq-minute-bar",
+              "reference/futures-tick-data"
+            ]
+          },
+          {
+            "group": "Reference Data",
+            "pages": [
+              "reference/security-master",
+              "reference/adjustment-factors"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "200+ datasets covering US equities, options, futures, and future options",
+    "Tick-level data with nanosecond timestamps from SIP consolidated feed",
+    "Minute bar, second bar, and daily OHLC aggregations with 60+ analytics fields",
+    "ArdaDB columnar cloud database with 2+ petabytes of ready-to-query data",
+    "Ultra-low-latency co-location feed (<15µs) from Equinix NY2/NY4 data centers",
+    "Corporate-action-adjusted historical data going back to 2007",
+    "Flexible delivery: CSV, SQL, API, cloud (AWS/GCP/Azure/Snowflake/Databricks), SFTP",
+    "Custom data engineering, pipeline-as-a-service, and ticker plant offerings",
+    "Reference data: Security Master, ASID Lookup, Adjustment Factors, IPO files",
+    "Zero service downtime since inception"
+  ],
+  "publicApiSurface": [
+    "ArdaDB SQL interface (SELECT from USEquityMarketData.TradeAndQuoteMinuteBar, etc.)",
+    "RESTful API for real-time and historical data access",
+    "TCP Socket / MultiCast co-location feeds",
+    "WebSocket streaming output from Ticker Plant",
+    "SFTP file delivery (CSV, Parquet, JSON, HDF5, FIX, Feather, Excel)",
+    "AWS / Google Cloud / Snowflake / Databricks / Azure direct integration",
+    "Console portal at console.algoseek.com",
+    "Dataset identifiers: algoseek SecID, FIGI, ISIN, ASID ticker mapping"
+  ]
+}
